@@ -1,0 +1,68 @@
+.mySwiper {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.mySwiper img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.swiper_opacity {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+.swiper_opacity_block{
+    position: absolute;
+    background: rgba(3,20,38,0.7);
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+}
+
+.header_content{
+    position: absolute;
+    top: 30%;
+    z-index: 3;
+    color: white;
+    width: 45%;
+}
+.header_content h1{
+    font-size: 60px;
+}
+.header_content p{
+    font-size: 22px;
+}
+.btn{
+    width: 150px;
+    height: 30px;
+    background: rgba(255,255,255, 0.3);
+    color: #031426;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn p {
+    margin-left: 10px;
+    color: white;
+}
+.arrowBtn{
+    background: white;
+    width: 30px ;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+.btn:hover .arrowBtn{
+    background: #031426;
+    color: white;
+}

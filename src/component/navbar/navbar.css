@@ -1,0 +1,104 @@
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 24px 0;
+    transition: all 0.4s ease;
+    z-index: 999;
+    background: transparent;
+}
+nav.sticky {
+    padding: 24px 0px;
+    background: white;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+nav .nav-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+nav .logo a {
+    font-weight: 500;
+    font-size: 35px;
+    color: #353842;
+}
+nav.sticky .logo a {
+    color: #fff;
+}
+
+.nav-content .nav-links {
+    display: flex;
+}
+
+.nav-content .nav-links li {
+    list-style: none;
+    margin: 0 8px;
+}
+
+nav.sticky  .nav-links li a{
+    color: black;
+
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 300;
+    padding: 15px 4px;
+    transition: all 0.3 ease;
+}
+
+
+
+.nav.sticky .nav-links li a {
+    color: #fff;
+    transition: all 0.4 ease;
+}
+
+.nav.sticky .nav-links li a:hover {
+    color: #0e2431;
+}
+
+.login{
+    width: 100px;
+    height: 30px;
+    background: rgba(255,255,255, 0.5);
+    text-decoration: none;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 50px;
+    padding: 5px  1px !important;
+}
+.login .arrowBtn{
+    background: #031426 ;
+    color: white;
+    height: 100%;
+}
+.login p {
+    margin: 0 10px;
+    color: black;
+    font-weight: 500 !important;
+}
+.login:hover .arrowBtn{
+    background: #fff ;
+    color: black ;
+}
+nav.sticky .login{
+    background: rgba(3, 20, 38, 0.1) !important;
+    color: black !important;
+}
+.lang_drop{
+    width: 100px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: black;
+    cursor: pointer;
+}
