@@ -132,7 +132,7 @@ section {
 
 @media screen and (max-width: 800px) {
     .header_content {
-        width: 100%;
+        width: 90%;
         top: 20%
     }
 
