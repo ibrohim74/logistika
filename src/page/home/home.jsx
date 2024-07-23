@@ -11,7 +11,7 @@ import 'swiper/css/pagination';
 // import required modules
 import {EffectFade, Navigation, Pagination, Autoplay} from 'swiper/modules';
 import Navbar from "../../component/navbar/navbar.jsx";
-import {ArrowRightOutlined} from "@ant-design/icons";
+import {ArrowRightOutlined, EnterOutlined} from "@ant-design/icons";
 
 
 const Home = () => {
@@ -44,20 +44,38 @@ const Home = () => {
 
                 <div className="container">
                     <div className="header_content">
-                        <h1>Delivering technology</h1>
-                        <p>Il software basato su intelligenza artificiale che ottimizza le operazioni di trasporto
-                            consegnando oggi le soluzioni di domani.
+                        <h1>Thompson Cargo</h1>
+                        <p>Надежная, срочная, быстрая перевозка грузов по выгодным ценам из Китая в Узбекистан –
+                            контейнеры (целые и сборные), фуры, консолидация по железной и автодорогам
                         </p>
 
                         <a href="#" className={"btn"}>
-                            <p>Contact</p>
+                            <p>Контакты</p>
                             <span className="arrowBtn"><ArrowRightOutlined/></span></a>
                     </div>
                 </div>
 
             </div>
 
-            <div style={{marginTop: "2000px"}}></div>
+            <section className={"container about"}>
+                <h1>ВЫ ПОЛУЧИТЕ <span>ЛУЧШИЙ</span> СЕРВИС И КАЧЕСТВО, ЧТО ЕСТЬ НА РАСТУЩЕМ РЫНКЕ ПО ЦЕНАМ, КОТОРЫЕ ПРЕВРАТЯТ
+                    ВЛОЖЕНИЯ НА <span>ДОСТАВКУ</span> – В МОЩНЫЙ АКТИВ ВАШЕГО БИЗНЕСА.</h1>
+
+                <div className="about-list">
+                    <ul>
+                        <li><EnterOutlined />Ваш контейнер или сборный груз будут доставлены вовремя каждый раз</li>
+                        <li><EnterOutlined />Крепление сборных грузов</li>
+                        <li><EnterOutlined />Подача контейнеров на склад отправителя: 40HQ; 45 HQ</li>
+                        <li><EnterOutlined />Полная прозрачность всех операций и договоров</li>
+
+                    </ul>
+                    <ul>
+                        <li><EnterOutlined />Весь процесс будет сопровождаться нашей командой профессионалов</li>
+                        <li><EnterOutlined />Фотоотчет с погрузки</li>
+                        <li><EnterOutlined />Ежедневное информирование о местонахождении Вашего груза</li>
+                    </ul>
+                </div>
+            </section>
         </div>
     );
 };

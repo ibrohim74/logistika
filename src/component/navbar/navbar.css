@@ -9,23 +9,28 @@ nav {
     z-index: 999;
     background: transparent;
 }
+
 nav.sticky {
     padding: 24px 0px;
     background: white;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
+
 nav .nav-content {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    z-index: 3;
 }
+
 nav .logo a {
     font-weight: 500;
     font-size: 35px;
     color: #353842;
 }
+
 nav.sticky .logo a {
     color: #fff;
 }
@@ -39,9 +44,8 @@ nav.sticky .logo a {
     margin: 0 8px;
 }
 
-nav.sticky  .nav-links li a{
+nav.sticky .nav-links li a {
     color: black;
-
 }
 
 .nav-links li a {
@@ -54,7 +58,6 @@ nav.sticky  .nav-links li a{
 }
 
 
-
 .nav.sticky .nav-links li a {
     color: #fff;
     transition: all 0.4 ease;
@@ -64,41 +67,162 @@ nav.sticky  .nav-links li a{
     color: #0e2431;
 }
 
-.login{
+.login {
     width: 100px;
     height: 30px;
-    background: rgba(255,255,255, 0.5);
+    background: rgba(255, 255, 255, 0.5);
     text-decoration: none;
     border-radius: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-left: 50px;
-    padding: 5px  1px !important;
+    padding: 5px 1px !important;
 }
-.login .arrowBtn{
-    background: #031426 ;
+
+.login .arrowBtn {
+    background: #031426;
     color: white;
     height: 100%;
 }
+
 .login p {
     margin: 0 10px;
     color: black;
     font-weight: 500 !important;
 }
-.login:hover .arrowBtn{
-    background: #fff ;
-    color: black ;
+
+.login:hover .arrowBtn {
+    background: #fff;
+    color: black;
 }
-nav.sticky .login{
+
+nav.sticky .login {
     background: rgba(3, 20, 38, 0.1) !important;
     color: black !important;
 }
-.lang_drop{
+
+.lang_drop {
     width: 100px;
     justify-content: center;
     align-items: center;
     display: flex;
     color: black;
     cursor: pointer;
+}
+
+nav .nav-menu1 {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: black !important;
+}
+
+nav .nav-menu {
+    justify-content: space-around;
+    align-items: center;
+    color: black !important;
+}
+
+nav .nav-menu ul {
+    list-style: none;
+    text-align: center;
+    padding: 0;
+}
+
+nav .nav-menu ul li {
+    margin: 15px 0;
+
+}
+
+.nav-menu {
+    display: none;
+}
+
+
+nav button {
+    display: none;
+    position: fixed;
+    width: 80px;
+    height: 80px;
+    top: 5px;
+    /*left: 5px;*/
+    right: 5px;
+    z-index: 6;
+
+    background: none;
+    outline: none;
+    border: none;
+}
+
+nav button svg {
+    font-size: 30px;
+}
+
+nav.sticky button svg{
+    color: black;
+}
+.nav-links{
+    text-transform: uppercase;
+
+}
+.logo {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 2px;
+}
+@media screen and (max-width: 800px) {
+    nav.sticky , nav{
+        height: 48px;
+    }
+    nav button{
+        display: block;
+    }
+    .nav-menu1 {
+        display: none !important;
+    }
+
+
+    .logo {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 2px;
+        z-index: 9;
+    }
+    .nav-menu {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+        background: rgba(255, 255, 255);
+        position: fixed;
+        flex-direction: column;
+        justify-content: center;
+        top: 0;
+        right: -100%;
+        z-index: 5;
+        transition: 2s;
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+
+    .nav-menu .nav-links {
+        flex-direction: column;
+
+    }
+
+    .nav-menu .nav-list a {
+
+        font-size: 25px !important;
+    }
+
+    .nav-menu a {
+        color: black !important;
+    }
 }
