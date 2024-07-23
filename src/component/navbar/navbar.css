@@ -1,13 +1,3 @@
-:root {
-    --background-color: #333;
-    --sticky-background-color: white;
-    --link-color: white;
-    --link-hover-color: #0e2431;
-    --button-background: rgba(255, 255, 255, 0.5);
-    --button-hover-background: #fff;
-    --button-hover-text-color: black;
-}
-
 nav {
     position: fixed;
     top: 0;
@@ -20,8 +10,7 @@ nav {
 }
 
 nav.sticky {
-    padding: 24px 0px;
-    background: var(--sticky-background-color);
+    background: white;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -30,18 +19,16 @@ nav .nav-content {
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     z-index: 3;
 }
 
-nav .logo a {
-    font-weight: 500;
-    font-size: 35px;
-    color: #353842;
+nav .logo a img {
+    max-height: 40px; /* Adjust the height as needed */
 }
 
-nav.sticky .logo a {
-    color: #fff;
+nav.sticky .logo a img {
+    /*filter: brightness(0) invert(1); !* Invert for better visibility on white *!*/
 }
 
 .nav-content .nav-links {
@@ -59,26 +46,21 @@ nav.sticky .nav-links li a {
 
 .nav-links li a {
     text-decoration: none;
-    color: var(--link-color);
+    color: white;
     font-size: 18px;
     font-weight: 300;
     padding: 15px 4px;
-    transition: all 0.3 ease;
+    transition: all 0.3s ease;
 }
 
-.nav.sticky .nav-links li a {
-    color: #fff;
-    transition: all 0.4 ease;
-}
-
-.nav.sticky .nav-links li a:hover {
-    color: var(--link-hover-color);
+nav.sticky .nav-links li a:hover {
+    color: #0e2431;
 }
 
 .login {
     width: 100px;
     height: 30px;
-    background: var(--button-background);
+    background: rgba(255, 255, 255, 0.5);
     text-decoration: none;
     border-radius: 20px;
     display: flex;
@@ -101,8 +83,8 @@ nav.sticky .nav-links li a {
 }
 
 .login:hover .arrowBtn {
-    background: var(--button-hover-background);
-    color: var(--button-hover-text-color);
+    background: #fff;
+    color: black;
 }
 
 nav.sticky .login {
@@ -161,6 +143,7 @@ nav button {
 
 nav button svg {
     font-size: 30px;
+    color: white;
 }
 
 nav.sticky button svg {
@@ -180,9 +163,8 @@ nav.sticky button svg {
 }
 
 @media screen and (max-width: 800px) {
-    nav.sticky,
-    nav {
-        height: 48px;
+    nav.sticky, nav {
+        height: 60px;
     }
     nav button {
         display: block;
@@ -190,6 +172,7 @@ nav.sticky button svg {
     .nav-menu1 {
         display: none !important;
     }
+
     .logo {
         height: 100%;
         display: flex;
@@ -199,6 +182,7 @@ nav.sticky button svg {
         left: 2px;
         z-index: 9;
     }
+
     .nav-menu {
         display: flex;
         width: 100%;
@@ -210,17 +194,21 @@ nav.sticky button svg {
         top: 0;
         right: -100%;
         z-index: 5;
-        transition: 2s;
+        transition: 0.5s ease;
     }
+
     .nav-menu.active {
         right: 0;
     }
+
     .nav-menu .nav-links {
         flex-direction: column;
     }
+
     .nav-menu .nav-list a {
         font-size: 25px !important;
     }
+
     .nav-menu a {
         color: black !important;
     }

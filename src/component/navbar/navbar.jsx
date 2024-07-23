@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./navbar.css";
 import logo from "../../assets/img/rsz_logo.png";
-import { ArrowRightOutlined, CloseOutlined, DownOutlined, MenuOutlined } from "@ant-design/icons";
-import { Dropdown, Space } from "antd";
-import { useLanguage } from "../../utils/lang/LangContext.jsx";
-import { languages } from "../../utils/lang/langs.jsx";
+import {ArrowRightOutlined, CloseOutlined, DownOutlined, MenuOutlined} from "@ant-design/icons";
+import {Dropdown, Space} from "antd";
+import {useLanguage} from "../../utils/lang/LangContext.jsx";
+import {languages} from "../../utils/lang/langs.jsx";
 
-const Navbar = ({ onlyIcon = true }) => {
-    const { handleLanguageChange, selectedLanguage } = useLanguage();
+const Navbar = ({onlyIcon = true}) => {
+    const {handleLanguageChange, selectedLanguage} = useLanguage();
     const [navClicker, setNavClicker] = useState(false);
 
     // Toggle navigation menu in mobile view
@@ -35,12 +35,12 @@ const Navbar = ({ onlyIcon = true }) => {
     return (
         <nav>
             <button onClick={handleChangeNav} aria-label="Toggle Navigation Menu">
-                {navClicker ? <CloseOutlined style={{ color: "black" }} /> : <MenuOutlined style={{ color: "white" }} />}
+                {navClicker ? <CloseOutlined style={{color: "black"}}/> : <MenuOutlined style={{color: "white"}}/>}
             </button>
             <div className="nav-content">
                 <div className="logo">
                     <a href="#">
-                        <img src={logo} alt="Logo" />
+                        <img src={logo} alt="Logo"/>
                     </a>
                 </div>
                 <div className="nav-menu1">
@@ -69,7 +69,7 @@ const Navbar = ({ onlyIcon = true }) => {
                             >
                                 <a onClick={(e) => e.preventDefault()}>
                                     <Space>
-                                        {selectedLanguage.icon} {selectedLanguage.label} <DownOutlined />
+                                        {selectedLanguage.icon} {selectedLanguage.label} <DownOutlined/>
                                     </Space>
                                 </a>
                             </Dropdown>
@@ -84,7 +84,7 @@ const Navbar = ({ onlyIcon = true }) => {
                             <a href="#" className={"btn login"}>
                                 <p>Login</p>
                                 <span className="arrowBtn">
-                  <ArrowRightOutlined />
+                  <ArrowRightOutlined/>
                 </span>
                             </a>
                         </li>
@@ -117,7 +117,7 @@ const Navbar = ({ onlyIcon = true }) => {
                         >
                             <a onClick={(e) => e.preventDefault()}>
                                 <Space>
-                                    {selectedLanguage.icon} {selectedLanguage.label} <DownOutlined />
+                                    {selectedLanguage.icon} {selectedLanguage.label} <DownOutlined/>
                                 </Space>
                             </a>
                         </Dropdown>
@@ -132,7 +132,7 @@ const Navbar = ({ onlyIcon = true }) => {
                         <a href="#" className={"btn login"}>
                             <p>Login</p>
                             <span className="arrowBtn">
-                <ArrowRightOutlined />
+                <ArrowRightOutlined/>
               </span>
                         </a>
                     </li>
