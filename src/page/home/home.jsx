@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import "./home.css"
 import {Swiper, SwiperSlide} from 'swiper/react';
 // Import Swiper styles
@@ -92,7 +92,10 @@ const Home = () => {
                 <Canvas className={'canvas'}>
                     <ambientLight/>
                     <spotLight intensity={0.9} angle={0.1} penumber={1} position={[10, 15, 10]} castShadow/>
-                    <Car/>
+                    <Suspense fallback={'loading'}>
+                        <Car/>
+                    </Suspense>
+
                     <OrbitControls
                         enablePan={false}
                         enableZoom={false}

@@ -7,13 +7,14 @@ Source: https://sketchfab.com/3d-models/shipping-containers-cc3f7136710f4905905e
 Title: Shipping containers
 */
 
-import React from 'react'
+import React, {useRef} from 'react'
 import { useGLTF } from '@react-three/drei'
 
 export function Car(props) {
   const { nodes, materials } = useGLTF('/car/scene.gltf')
+    const group = useRef()
   return (
-    <group {...props} dispose={null} scale={0.5}>
+    <group ref={group} {...props} dispose={null} scale={0.5}>
       <group scale={0.01}>
         <mesh geometry={nodes.Crate_Crate_0.geometry} material={materials.Crate} position={[0, 129.722, -0.646]} rotation={[-Math.PI / 2, 0, 0]} scale={100} />
         <mesh geometry={nodes.Crate001_Crate2_0.geometry} material={materials.Crate2} position={[3.005, 388.368, -4.869]} rotation={[-Math.PI / 2, 0, 0.01]} scale={100} />
