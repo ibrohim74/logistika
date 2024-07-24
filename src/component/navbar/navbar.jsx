@@ -129,7 +129,7 @@ const Navbar = ({onlyIcon = true}) => {
                             alignItems: "center",
                         }}
                     >
-                        <a href="#" className={"btn login"}>
+                        <a href="#" className={"btn login"} style={{margin:0}}>
                             <p>Login</p>
                             <span className="arrowBtn">
                 <ArrowRightOutlined/>

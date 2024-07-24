@@ -12,6 +12,7 @@ import 'swiper/css/pagination';
 import {EffectFade, Navigation, Pagination, Autoplay} from 'swiper/modules';
 import Navbar from "../../component/navbar/navbar.jsx";
 import {ArrowRightOutlined, EnterOutlined} from "@ant-design/icons";
+import PriceCalc from "./priceCalc.jsx";
 
 
 const Home = () => {
@@ -58,23 +59,32 @@ const Home = () => {
             </div>
 
             <section className={"container about"}>
-                <h1>ВЫ ПОЛУЧИТЕ <span>ЛУЧШИЙ</span> СЕРВИС И КАЧЕСТВО, ЧТО ЕСТЬ НА РАСТУЩЕМ РЫНКЕ ПО ЦЕНАМ, КОТОРЫЕ ПРЕВРАТЯТ
+                <h1>ВЫ ПОЛУЧИТЕ <span>ЛУЧШИЙ</span> СЕРВИС И КАЧЕСТВО, ЧТО ЕСТЬ НА РАСТУЩЕМ РЫНКЕ ПО ЦЕНАМ, КОТОРЫЕ
+                    ПРЕВРАТЯТ
                     ВЛОЖЕНИЯ НА <span>ДОСТАВКУ</span> – В МОЩНЫЙ АКТИВ ВАШЕГО БИЗНЕСА.</h1>
 
                 <div className="about-list">
                     <ul>
-                        <li><EnterOutlined />Ваш контейнер или сборный груз будут доставлены вовремя каждый раз</li>
-                        <li><EnterOutlined />Крепление сборных грузов</li>
-                        <li><EnterOutlined />Подача контейнеров на склад отправителя: 40HQ; 45 HQ</li>
-                        <li><EnterOutlined />Полная прозрачность всех операций и договоров</li>
+                        <li><EnterOutlined/>Ваш контейнер или сборный груз будут доставлены вовремя каждый раз</li>
+                        <li><EnterOutlined/>Крепление сборных грузов</li>
+                        <li><EnterOutlined/>Подача контейнеров на склад отправителя: 40HQ; 45 HQ</li>
+                        <li><EnterOutlined/>Полная прозрачность всех операций и договоров</li>
 
                     </ul>
                     <ul>
-                        <li><EnterOutlined />Весь процесс будет сопровождаться нашей командой профессионалов</li>
-                        <li><EnterOutlined />Фотоотчет с погрузки</li>
-                        <li><EnterOutlined />Ежедневное информирование о местонахождении Вашего груза</li>
+                        <li><EnterOutlined/>Весь процесс будет сопровождаться нашей командой профессионалов</li>
+                        <li><EnterOutlined/>Фотоотчет с погрузки</li>
+                        <li><EnterOutlined/>Ежедневное информирование о местонахождении Вашего груза</li>
                     </ul>
                 </div>
+            </section>
+
+            <PriceCalc/>
+
+            <section className={'container car'}>
+                <h1>ВЫ ВИДИТЕ ПОЛНОЕ СОПРОВОЖДЕНИЕ ДОСТАВКИ – С ТОЧКИ А ДО ТОЧКИ B. КАК ГРУЗЫ БЕРЕЖНО РАЗМЕЩЕНЫ НА ФУРАХ
+                    И КАК ОТБЫВАЮТ СО СКЛАДА В СТРОГОМ СООТВЕТСТВИИ СО СТАНДАРТАМИ ISO – 9000.</h1>
+
             </section>
         </div>
     );
