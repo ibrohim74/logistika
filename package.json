@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
+    "@react-three/drei": "^9.109.2",
+    "@react-three/fiber": "^8.16.8",
     "antd": "^5.19.2",
     "i18next": "^23.12.1",
     "i18next-browser-languagedetector": "^8.0.0",

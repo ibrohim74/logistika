@@ -13,6 +13,9 @@ import {EffectFade, Navigation, Pagination, Autoplay} from 'swiper/modules';
 import Navbar from "../../component/navbar/navbar.jsx";
 import {ArrowRightOutlined, EnterOutlined} from "@ant-design/icons";
 import PriceCalc from "./priceCalc.jsx";
+import {Canvas} from "@react-three/fiber";
+import {Environment, OrbitControls} from "@react-three/drei";
+import {Car} from "../../component/Scene";
 
 
 const Home = () => {
@@ -82,9 +85,22 @@ const Home = () => {
             <PriceCalc/>
 
             <section className={'container car'}>
-                <h1>ВЫ ВИДИТЕ ПОЛНОЕ СОПРОВОЖДЕНИЕ ДОСТАВКИ – С ТОЧКИ А ДО ТОЧКИ B. КАК ГРУЗЫ БЕРЕЖНО РАЗМЕЩЕНЫ НА ФУРАХ
+                <h1>ВЫ ВИДИТЕ <span>ПОЛНОЕ СОПРОВОЖДЕНИЕ</span> ДОСТАВКИ – С ТОЧКИ А ДО ТОЧКИ B. КАК ГРУЗЫ <span>БЕРЕЖНО РАЗМЕЩЕНЫ</span> НА
+                    ФУРАХ
                     И КАК ОТБЫВАЮТ СО СКЛАДА В СТРОГОМ СООТВЕТСТВИИ СО СТАНДАРТАМИ ISO – 9000.</h1>
 
+                <Canvas className={'canvas'}>
+                    <ambientLight/>
+                    <spotLight intensity={0.9} angle={0.1} penumber={1} position={[10, 15, 10]} castShadow/>
+                    <Car/>
+                    <OrbitControls
+                        enablePan={false}
+                        enableZoom={false}
+                        enableDamping={true}
+                        autoRotate={true}
+                        minPolarAngle={Math.PI / 2} // Vertikal harakatni faqat x o'qi bo'yicha cheklash
+                        maxPolarAngle={Math.PI / 2}/>
+                </Canvas>
             </section>
         </div>
     );
