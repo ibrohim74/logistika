@@ -1,4 +1,4 @@
-import {Icons} from "../../assets/icons/icons.js";
+import {Icons} from "../../assets/icons/icons.jsx";
 import EN from "../../assets/icons/eng.svg"
 import RU from "../../assets/icons/ru.svg"
 import UZ from "../../assets/icons/uz.svg"

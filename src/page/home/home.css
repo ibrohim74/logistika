@@ -76,13 +76,15 @@
 }
 
 section {
-    margin-top: 50px !important;
+    /*margin-top: 50px !important;*/
+    padding-top: 50px !important;
 }
 
 section h1 {
     width: 80%;
     font-size: 30px;
     color: #fff;
+    margin-top: 0;
 }
 
 section h1 span {
@@ -90,7 +92,7 @@ section h1 span {
     -webkit-background-clip: text;
     -webkit-text-fill-color: rgba(0, 0, 0, 0);
 }
-
+.about {background: #031426}
 .about-list {
     width: 100%;
     display: flex;
@@ -139,7 +141,6 @@ section h1 span {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 50px 0;
 }
 .calc-box form{
     width: 100%;
@@ -163,7 +164,7 @@ section h1 span {
     width: 100%;
 }
 .priceCalc-send{
-    margin-top: 25px;
+    margin: 50px 0;
     width: 100%;
 }
 .priceCalc-send button{
@@ -185,7 +186,8 @@ section h1 span {
 }
 
 .car{
-    width: 90%;
+    width: 100%;
+    background: #031426;
 }
 .canvas {
     display: flex;

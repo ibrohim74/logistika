@@ -1,0 +1,111 @@
+.filterBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.filterBox_panel {
+    width: 70%;
+    height: 70px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    display: flex;
+}
+
+.filterBox_item {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px #A6A6A6 solid;
+    cursor: pointer;
+}
+
+.filterBox_item:nth-child(1) {
+    width: 100px;
+    cursor: pointer;
+}
+
+.filterBox_item:nth-child(2) {
+    width: 100px;
+}
+
+.filterBox_item:nth-child(2) input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 10px;
+    text-align: center;
+}
+.filterBox_item:nth-child(3) input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 10px;
+    text-align: left;
+}.filterBox_item:nth-child(3) input::placeholder {
+
+    text-align: center;
+
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.filterBox_item:nth-child(3) {
+    width: 330px;
+    padding: 0 10px !important;
+}
+
+.filterBox_item:nth-child(4) {
+    width: 250px;
+
+}
+
+.filterBox_item:nth-child(4) select {
+    cursor: pointer;
+    width: 100%;
+    padding: 10px;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 700;
+    -moz-appearance: none; /* Firefox */
+    -webkit-appearance: none; /* Safari and Chrome */
+    appearance: none;
+    background: url("../../assets/icons/arrowBottom.svg") no-repeat 95% 50%;
+}
+
+.filterBox_item:nth-child(4) select option {
+    width: 80%;
+    border: none;
+    outline: none;
+}
+
+.filterBox_item:nth-child(5) {
+    width: 300px;
+    border-right: none;
+    display: flex;
+    color: #FF4141;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.filterBox_item:nth-child(5) svg{
+    margin-right: 10px;
+}

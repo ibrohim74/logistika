@@ -99,6 +99,7 @@ nav.sticky .login {
     display: flex;
     color: black;
     cursor: pointer;
+    margin-right: 40px !important;
 }
 
 nav .nav-menu1 {
@@ -106,8 +107,11 @@ nav .nav-menu1 {
     justify-content: space-around;
     align-items: center;
     color: black !important;
+    margin-right: 30px;
 }
-
+nav .nav-menu1 ul:nth-child(1){
+    margin-right: 40px;
+}
 nav .nav-menu {
     justify-content: space-around;
     align-items: center;
@@ -126,6 +130,7 @@ nav .nav-menu ul li {
 
 .nav-menu {
     display: none;
+
 }
 
 nav button {

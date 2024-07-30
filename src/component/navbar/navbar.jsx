@@ -5,6 +5,8 @@ import {ArrowRightOutlined, CloseOutlined, DownOutlined, MenuOutlined} from "@an
 import {Dropdown, Space} from "antd";
 import {useLanguage} from "../../utils/lang/LangContext.jsx";
 import {languages} from "../../utils/lang/langs.jsx";
+import {Link} from "react-router-dom";
+import {LOGIN} from "../../utils/const.jsx";
 
 const Navbar = ({onlyIcon = true}) => {
     const {handleLanguageChange, selectedLanguage} = useLanguage();
@@ -81,12 +83,12 @@ const Navbar = ({onlyIcon = true}) => {
                                 alignItems: "center",
                             }}
                         >
-                            <a href="#" className={"btn login"}>
+                            <Link to={LOGIN} className={"btn login"} style={{margin: 0}}>
                                 <p>Login</p>
                                 <span className="arrowBtn">
-                  <ArrowRightOutlined/>
-                </span>
-                            </a>
+                                   <ArrowRightOutlined/>
+                                </span>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -129,12 +131,12 @@ const Navbar = ({onlyIcon = true}) => {
                             alignItems: "center",
                         }}
                     >
-                        <a href="#" className={"btn login"} style={{margin:0}}>
+                        <Link to={LOGIN} className={"btn login"} style={{margin: 0}}>
                             <p>Login</p>
                             <span className="arrowBtn">
-                <ArrowRightOutlined/>
-              </span>
-                        </a>
+                                <ArrowRightOutlined/>
+                            </span>
+                        </Link>
                     </li>
                 </ul>
             </div>

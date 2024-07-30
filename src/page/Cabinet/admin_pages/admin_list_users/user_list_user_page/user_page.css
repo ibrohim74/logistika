@@ -1,0 +1,103 @@
+.fileUploadLabel {
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+    padding: 16px 20px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+    overflow: hidden;
+    color: #555;
+}
+
+.fileUploadLabel:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.fileUpload {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.btn_box_userPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create_form_userPage {
+    width: 90%;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create_form_userPage input {
+    width: 150px;
+    margin: 5px 0;
+}
+
+.userPage_table #view, .userPage_table #cube {
+    padding: 0 !important;
+}
+
+.userPage_table {
+    width: 100%;
+
+}
+
+.userPage_table tr {
+    width: 100% !important;
+}
+
+.create_form_userPage select {
+    padding: 5px;
+    border-radius: 10px;
+    border: #bebebe solid 1px;
+}
+
+.btn_modal_user_list {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn_modal_user_list button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    background: #24b724;
+    color: white;
+    padding: 5px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.btn_modal_user_list button:nth-child(2) {
+    background: #f8f8f8;
+    border: 1px solid #ccc;
+    color: #555
+}
+
+.modal_userList_select{
+    display: block;
+    width: 20%;
+    padding: 5px 20px;
+    border: #ccc 1px solid;
+    border-radius: 10px;
+}
