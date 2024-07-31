@@ -18,11 +18,12 @@ import {Environment, OrbitControls} from "@react-three/drei";
 
 import mapPhoto from '../../assets/pngegg.png'
 import {Input} from "antd";
+import Footer from "../../component/footer/footer.jsx";
 
 const Home = () => {
     const [initialState , setInitialState] = useState({})
     return (
-        <div>
+        <>
             <Navbar/>
             <div className={"swiper_opacity"}>
                 <div className="swiper_opacity_block"></div>
@@ -200,7 +201,12 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-        </div>
+
+            <section className={'footer'}>
+                <Footer/>
+            </section>
+
+        </>
     );
 };
 
