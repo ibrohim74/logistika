@@ -7,11 +7,12 @@ import {useLanguage} from "../../utils/lang/LangContext.jsx";
 import {languages} from "../../utils/lang/langs.jsx";
 import {Link} from "react-router-dom";
 import {LOGIN} from "../../utils/const.jsx";
+import {useTranslation} from "react-i18next";
 
 const Navbar = ({onlyIcon = true}) => {
     const {handleLanguageChange, selectedLanguage} = useLanguage();
     const [navClicker, setNavClicker] = useState(false);
-
+    const { t } = useTranslation();
     // Toggle navigation menu in mobile view
     const handleChangeNav = () => {
         setNavClicker((current) => !current);
@@ -48,16 +49,16 @@ const Navbar = ({onlyIcon = true}) => {
                 <div className="nav-menu1">
                     <ul className="nav-links">
                         <li>
-                            <a href="#">Главная</a>
+                            <a href="#">{t('nav.home')}</a>
                         </li>
                         <li>
-                            <a href="#">О нас</a>
+                            <a href="#">{t('nav.about')}</a>
                         </li>
                         <li>
-                            <a href="#">УСЛУГИ</a>
+                            <a href="#">{t('nav.services')}</a>
                         </li>
                         <li>
-                            <a href="#">Контакты</a>
+                            <a href="#">{t('nav.contact')}</a>
                         </li>
                     </ul>
                     <ul className="nav-links">
@@ -77,6 +78,7 @@ const Navbar = ({onlyIcon = true}) => {
                             </Dropdown>
                         </li>
                         <li
+                            className={"login-li"}
                             style={{
                                 display: "flex",
                                 justifyContent: "center",
@@ -84,7 +86,7 @@ const Navbar = ({onlyIcon = true}) => {
                             }}
                         >
                             <Link to={LOGIN} className={"btn login"} style={{margin: 0}}>
-                                <p>Login</p>
+                                <p>{t('nav.login')}</p>
                                 <span className="arrowBtn">
                                    <ArrowRightOutlined/>
                                 </span>
@@ -96,16 +98,16 @@ const Navbar = ({onlyIcon = true}) => {
             <div className={`nav-menu ${navClicker ? "active" : ""}`}>
                 <ul className="nav-links nav-list">
                     <li>
-                        <a href="#">Главная</a>
+                        <a href="#">{t('nav.home')}</a>
                     </li>
                     <li>
-                        <a href="#">О нас</a>
+                        <a href="#">{t('nav.about')}</a>
                     </li>
                     <li>
-                        <a href="#">УСЛУГИ</a>
+                        <a href="#">{t('nav.services')}</a>
                     </li>
                     <li>
-                        <a href="#">Контакты</a>
+                        <a href="#">{t('nav.contact')}</a>
                     </li>
                 </ul>
                 <ul className="nav-links">
@@ -125,6 +127,7 @@ const Navbar = ({onlyIcon = true}) => {
                         </Dropdown>
                     </li>
                     <li
+                        className={"login-li"}
                         style={{
                             display: "flex",
                             justifyContent: "center",
@@ -132,10 +135,10 @@ const Navbar = ({onlyIcon = true}) => {
                         }}
                     >
                         <Link to={LOGIN} className={"btn login"} style={{margin: 0}}>
-                            <p>Login</p>
+                            <p>{t('nav.login')}</p>
                             <span className="arrowBtn">
-                                <ArrowRightOutlined/>
-                            </span>
+                                   <ArrowRightOutlined/>
+                                </span>
                         </Link>
                     </li>
                 </ul>

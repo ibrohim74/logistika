@@ -3,7 +3,6 @@ nav {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 24px 0;
     transition: all 0.4s ease;
     z-index: 999;
     background: transparent;
@@ -58,7 +57,7 @@ nav.sticky .nav-links li a:hover {
 }
 
 .login {
-    width: 100px;
+    width: 110px;
     height: 30px;
     background: rgba(255, 255, 255, 0.5);
     text-decoration: none;
@@ -101,7 +100,17 @@ nav.sticky .login {
     cursor: pointer;
     margin-right: 40px !important;
 }
-
+.lang_drop , .login{
+    text-transform: none;
+}
+.nav-links .lang_drop:hover  {
+    border-bottom: none;
+}
+.nav-links .login-li:hover  {
+    border-bottom: none;
+}
+.nav-menu.active .lang_drop{
+    margin-right: 0 !important;}
 nav .nav-menu1 {
     display: flex;
     justify-content: space-around;
@@ -157,16 +166,30 @@ nav.sticky button svg {
 .nav-links {
     text-transform: uppercase;
 }
+.nav-links li{ padding: 10px 0;}
+.nav-links li:hover{
+        border-bottom: 1px white solid;
+
+}
+nav.sticky .nav-links li:hover{
+        border-bottom: 1px black solid;
+
+}
+
 
 .logo {
+    position: relative;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    left: 2px;
+    left: 20px;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1000px) {
+    nav{
+        padding: 24px 0;
+    }
     nav.sticky, nav {
         height: 60px;
     }
@@ -183,7 +206,7 @@ nav.sticky button svg {
         justify-content: center;
         align-items: center;
         position: absolute;
-        left: 2px;
+        left: 10px;
         z-index: 9;
     }
 

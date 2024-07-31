@@ -132,7 +132,8 @@ section h1 span {
 }
 
 .about ul li:hover {
-    color: lightgreen;
+    color: #1AA0EA;
+    cursor: pointer;
 }
 
 .calc {
@@ -259,7 +260,7 @@ section h1 span {
 .container .box {
     position: relative;
     width: 320px;
-    height: 400px;
+    height: 430px;
     color: #fff;
     background: #111;
     display: flex;
@@ -267,6 +268,7 @@ section h1 span {
     align-items: center;
     margin: 20px 30px;
     transition: 0.5s;
+    cursor: pointer;
 }
 
 .container .box:hover {

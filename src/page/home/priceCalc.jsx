@@ -1,63 +1,86 @@
 import React, {useState} from 'react';
 import './home.css'
 import {Input, Select, Typography} from "antd";
+import {useTranslation} from "react-i18next";
 
 const PriceCalc = () => {
-    const [initialState , setInitialState] = useState({
-        transport:"poyezd"
+    const [initialState, setInitialState] = useState({
+        transport: "poyezd"
     })
-    const handleChangeTransport = (val) =>{
-        setInitialState({...initialState , transport:val})
+    const {t} = useTranslation();
+    const langStorage = window.localStorage.getItem('i18nextLng')
+    const handleChangeTransport = (val) => {
+        setInitialState({...initialState, transport: val})
     }
     console.log(initialState)
     return (
         <div className={'calc'} style={{marginTop: "50px"}}>
             <div className="container">
                 <div className="calc-box">
-                    <h1>Узнайте <span>стоимость доставки</span> за минуту <br/> с консультантами <span>Thompson Cargo</span></h1>
+                    {langStorage === 'ru' || langStorage === "ru-RU" ? (
+                        <h1>Узнайте
+                            <span>стоимость доставки</span> за минуту
+                            <br/> с консультантами <span>Thompson Cargo</span>
+                        </h1>
+                    ) : ('')}
+                    {langStorage === 'uz' || langStorage === "uz-UZ" ? (
+                        <h1><span>Thompson Cargo </span>
+                            konsultantlari <span>bilan </span> <br/>
+                            bir daqiqada <span>yetkazib berish</span> narxini
+                            bilib oling
+                        </h1>
+                    ) : ('')}
+                    {langStorage === 'en' || langStorage === "en-EN" ? (
+                        <h1>
+                            <span>Find out </span>
+                            the delivery cost in <br/> <span>one minute </span>
+                            with <span>Thompson Cargo</span> consultants
+                        </h1>
+                    ) : ('')}
+
                     <form>
                         <div className="box-input">
                             <div className="input">
-                                <Typography.Title level={5}>Выбрать транспорт*</Typography.Title>
+                                <Typography.Title level={5}>{t("priceCalc.transport.title")}</Typography.Title>
                                 <Select
                                     defaultValue={initialState?.transport}
-                                    style={{ width: '100%', height:"50px" }}
+                                    style={{width: '100%', height: "50px"}}
                                     onChange={handleChangeTransport}
                                     options={[
-                                        { value: 'poyezd', label: 'Железнодорожные перевозки' },
-                                        { value: 'truck', label: 'Автомобильные перевозки' },
+                                        {value: 'poyezd', label: t("priceCalc.transport.item1")},
+                                        {value: 'truck', label: t("priceCalc.transport.item2")},
                                     ]}
                                 />
                             </div>
                             <div className="input">
-                                <Typography.Title level={5}>Наименование груза*</Typography.Title>
-                                <Input placeholder="Наименование груза*"/>
+                                <Typography.Title level={5}>{t("priceCalc.nameProduct")}</Typography.Title>
+                                <Input placeholder={t("priceCalc.nameProduct")}/>
                             </div>
                             <div className="input">
-                                <Typography.Title level={5}>Вес (в килограммах)*</Typography.Title>
-                                <Input placeholder="Вес (в килограммах)*"/>
+                                <Typography.Title level={5}>{t("priceCalc.weight")}</Typography.Title>
+                                <Input placeholder={t("priceCalc.weight")}/>
                             </div>
                             <div className="input">
-                                <Typography.Title level={5}>Объем (куб 3²)*</Typography.Title>
-                                <Input placeholder={"Объем (куб 3²)*"}/>
+                                <Typography.Title level={5}>{t("priceCalc.cube")}</Typography.Title>
+                                <Input placeholder={t("priceCalc.cube")}/>
                             </div>
 
                         </div>
                         <div className="box-input">
                             <div className="input">
-                                <Typography.Title level={5}>Откуда (страна)*</Typography.Title>
-                                <Input placeholder={"Откуда (страна)*"}/>
+                                <Typography.Title level={5}>{t("priceCalc.where")}</Typography.Title>
+                                <Input placeholder={t("priceCalc.where")}/>
                             </div>
                             <div className="input">
-                                <Typography.Title level={5}>Куда (страна)*</Typography.Title>
-                                <Input placeholder={"Куда (страна)*"}/>
+                                <Typography.Title level={5}>{t("priceCalc.where2")}</Typography.Title>
+                                <Input placeholder={t("priceCalc.where2")}/>
                             </div>
                             <div className="input">
-                                <Typography.Title level={5}>Ваше имя*</Typography.Title>
-                                <Input placeholder={"Ваше имя*"}/>
+                                <Typography.Title level={5}>{t("priceCalc.username")}</Typography.Title>
+                                <Input placeholder={t("priceCalc.username")}/>
                             </div>
                             <div className="input">
-                                <Typography.Title level={5}>Введите номер телефона</Typography.Title>
+                                <Typography.Title level={5}>{t("priceCalc.tell")}</Typography.Title>
                                 <Input placeholder={"+998"}
                                        value={initialState?.contact}
                                        type={'tell'}
@@ -84,7 +107,7 @@ const PriceCalc = () => {
                     </form>
                     <div className="priceCalc-send">
                         <button>
-                            ПОЛУЧИТЬ РАСЧЕТ
+                            {t("priceCalc.getCalc")}
                         </button>
                     </div>
                 </div>

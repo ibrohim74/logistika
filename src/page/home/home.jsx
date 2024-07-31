@@ -19,9 +19,12 @@ import {Environment, OrbitControls} from "@react-three/drei";
 import mapPhoto from '../../assets/pngegg.png'
 import {Input} from "antd";
 import Footer from "../../component/footer/footer.jsx";
+import {useTranslation} from "react-i18next";
 
 const Home = () => {
-    const [initialState , setInitialState] = useState({})
+    const [initialState, setInitialState] = useState({})
+    const {t} = useTranslation();
+    const langStorage = window.localStorage.getItem('i18nextLng')
     return (
         <>
             <Navbar/>
@@ -54,12 +57,10 @@ const Home = () => {
                 <div className="container">
                     <div className="header_content">
                         <h1>Thompson Cargo</h1>
-                        <p>Надежная, срочная, быстрая перевозка грузов по выгодным ценам из Китая в Узбекистан –
-                            контейнеры (целые и сборные), фуры, консолидация по железной и автодорогам
-                        </p>
+                        <p>{t('home_header.p')}</p>
 
                         <a href="#" className={"btn"}>
-                            <p>Контакты</p>
+                            <p>{t('home_header.contact')}</p>
                             <span className="arrowBtn"><ArrowRightOutlined/></span></a>
                     </div>
                 </div>
@@ -68,22 +69,41 @@ const Home = () => {
 
             <section className={" about"}>
                 <div className="container">
-                    <h1>ВЫ ПОЛУЧИТЕ <span>ЛУЧШИЙ</span> СЕРВИС И КАЧЕСТВО, ЧТО ЕСТЬ НА РАСТУЩЕМ РЫНКЕ ПО ЦЕНАМ, КОТОРЫЕ
-                        ПРЕВРАТЯТ
-                        ВЛОЖЕНИЯ НА <span>ДОСТАВКУ</span> – В МОЩНЫЙ АКТИВ ВАШЕГО БИЗНЕСА.</h1>
+                    {langStorage === 'ru' || langStorage === "ru-RU" ? (
+                        <h1>ВЫ ПОЛУЧИТЕ <span>ЛУЧШИЙ</span> СЕРВИС И КАЧЕСТВО, ЧТО ЕСТЬ НА РАСТУЩЕМ РЫНКЕ ПО ЦЕНАМ,
+                            КОТОРЫЕ
+                            ПРЕВРАТЯТ
+                            ВЛОЖЕНИЯ НА <span>ДОСТАВКУ</span> – В МОЩНЫЙ АКТИВ ВАШЕГО БИЗНЕСА.</h1>
+                    ) : ('')}
+                    {langStorage === 'en' || langStorage === "en-EN" ? (
+                        <h1>You will receive the <span>best service</span> and quality on the growing market at prices
+                            that <span>will</span> turn
+                            delivery investments into a <span>powerful</span> asset for your <span>business</span>.</h1>
+                    ) : (
+                        ''
+                    )}
+                    {langStorage === 'uz' || langStorage === "uz-UZ" ? (
+                        <h1>Siz o'sib borayotgan <span>bozorda</span> eng yaxshi
+                            <span> xizmat</span> va <span>sifatni</span> olasiz, bu sizning
+                            <span> biznesingiz </span>
+                            uchun etkazib berish xarajatlarini qudratli <span>aktivga</span> aylantiradi.</h1>
+                    ) : (
+                        ''
+                    )}
+
 
                     <div className="about-list">
                         <ul>
-                            <li><EnterOutlined/>Ваш контейнер или сборный груз будут доставлены вовремя каждый раз</li>
-                            <li><EnterOutlined/>Крепление сборных грузов</li>
-                            <li><EnterOutlined/>Подача контейнеров на склад отправителя: 40HQ; 45 HQ</li>
-                            <li><EnterOutlined/>Полная прозрачность всех операций и договоров</li>
+                            <li><EnterOutlined/>{t('about.i1')}</li>
+                            <li><EnterOutlined/>{t('about.i2')}</li>
+                            <li><EnterOutlined/>{t('about.i3')}</li>
+                            <li><EnterOutlined/>{t('about.i4')}</li>
 
                         </ul>
                         <ul>
-                            <li><EnterOutlined/>Весь процесс будет сопровождаться нашей командой профессионалов</li>
-                            <li><EnterOutlined/>Фотоотчет с погрузки</li>
-                            <li><EnterOutlined/>Ежедневное информирование о местонахождении Вашего груза</li>
+                            <li><EnterOutlined/>{t('about.i5')}</li>
+                            <li><EnterOutlined/>{t('about.i6')}</li>
+                            <li><EnterOutlined/>{t('about.i7')}</li>
                         </ul>
                     </div>
                 </div>
@@ -96,70 +116,98 @@ const Home = () => {
                 <div className="car-opacity"></div>
                 <div className="container">
                     <div className="car-title">
-                        <h1>ВЫ ВИДИТЕ <span>ПОЛНОЕ СОПРОВОЖДЕНИЕ</span> ДОСТАВКИ – С ТОЧКИ А ДО ТОЧКИ B. КАК
-                            ГРУЗЫ <span>БЕРЕЖНО РАЗМЕЩЕНЫ</span> НА
-                            ФУРАХ
-                            И КАК ОТБЫВАЮТ СО СКЛАДА В СТРОГОМ СООТВЕТСТВИИ СО СТАНДАРТАМИ ISO – 9000.</h1>
+                        {langStorage === 'ru' || langStorage === "ru-RU" ? (
+                            <h1>ВЫ ВИДИТЕ <span>ПОЛНОЕ СОПРОВОЖДЕНИЕ</span> ДОСТАВКИ – С ТОЧКИ А ДО ТОЧКИ B. КАК
+                                ГРУЗЫ <span>БЕРЕЖНО РАЗМЕЩЕНЫ</span> НА
+                                ФУРАХ
+                                И КАК ОТБЫВАЮТ СО СКЛАДА В СТРОГОМ СООТВЕТСТВИИ СО СТАНДАРТАМИ <span>ISO – 9000</span>.
+                            </h1>
+                        ) : ('')}
+                        {langStorage === 'uz' || langStorage === "uz-UZ" ? (
+                            <h1>
+                                Siz A nuqtasidan B nuqtasigacha
+                                bo‘lgan <span>to‘liq yetkazib berish jarayonini</span> ko‘rasiz.
+                                Yuklar yuk
+                                mashinalariga <span>ehtiyotkorlik</span> bilan <span>joylashtirilgan</span> va
+                                ombordan <span>ISO-9000 </span>
+                                standartlariga qat'iy rioya qilgan holda jo‘natiladi.
+                            </h1>
+                        ) : ('')}
+                        {langStorage === 'en' || langStorage === "en-EN" ? (
+                            <h1>
+                                You <span>see</span> the complete <span>delivery</span> accompaniment – from point A to point B. How the cargo is
+                                carefully <span>placed</span> on the trucks and departs from the <span>warehouse</span> in strict accordance with
+                                <span>ISO-9000</span> standards.
+                            </h1>
+                        ) : ('')}
                     </div>
                 </div>
             </section>
             <section className={'aboutCompany'}>
                 <div className="container">
                     <div className="aboutCompany-title">
-                        <h1>Ваш <span>Проект</span> – Наш <span>Приоритет</span></h1>
-                        <p>В Thompson Company мы придаем особое значение каждому вашему проекту, обеспечивая внимание к
-                            деталям и индивидуальный подход. С нами вы получаете наиболее оптимальные условия доставки и
-                            решения, которые соответствуют вашим потребностям.</p>
+                        {langStorage === 'ru' || langStorage === "ru-RU" ? (
+                            <h1>
+                                Ваш <span>Проект</span> – Наш <span>Приоритет</span>
+                            </h1>
+                        ) : ('')}
+                        {langStorage === 'uz' || langStorage === "uz-UZ" ? (
+                            <h1>
+                                Sizning <span>Loyihangiz</span> – Bizning <span>Ustuvorligimiz</span>
+                            </h1>
+                        ) : ('')}
+                        {langStorage === 'en' || langStorage === "en-EN" ? (
+                            <h1>
+                                Your <span>Project</span>  – Our <span>Priority</span>
+                            </h1>
+                        ) : ('')}
+
+
+                        <p>{t("aboutCompany.titleP")}</p>
                     </div>
                     <div className="aboutCompany-box">
                         <div className="box">
                             <span></span>
                             <div className="content">
-                                <h2>Эксперты по Логистике и Доставке</h2>
-                                <p>Наша команда состоит из профессионалов, которые специализируются на работе с грузами
-                                    различных видов и размеров. Благодаря нашему опыту и знаниям, мы предлагаем лучшие
-                                    решения в области международной логистики и доставки грузов.</p>
+                                <h2>{t("aboutCompany.card1.title")}</h2>
+                                <p>{t("aboutCompany.card1.description")}</p>
 
                             </div>
                         </div>
                         <div className="box">
                             <span></span>
                             <div className="content">
-                                <h2> Индивидуальные Логистические Решения</h2>
-                                <p>Мы предоставляем комплексные логистические решения, адаптированные под ваши нужды.
-                                    Наша цель – обеспечить надежную и эффективную доставку вашего груза, используя
-                                    индивидуальный подход к каждому проекту.</p>
+                                <h2> {t("aboutCompany.card2.title")}</h2>
+                                <p>{t("aboutCompany.card2.description")}</p>
                             </div>
                         </div>
                         <div className="box">
                             <span></span>
                             <div className="content">
-                                <h2>Надежность и Эффективность</h2>
-                                <p>Thompson Company – это ваш надежный партнер в логистике. Мы стремимся предложить
-                                    наилучшие условия для каждого клиента, гарантируя своевременную и безопасную
-                                    доставку вашего груза.</p>
+                                <h2>{t("aboutCompany.card3.title")}</h2>
+                                <p>{t("aboutCompany.card3.description")}</p>
                             </div>
                         </div>
                     </div>
                     <div className="aboutCompany-chart">
-                       <div className="aboutCompany-chart-item">
-                           <h1>100</h1>
-                          <p>довольный клиенты</p>
-                       </div>
                         <div className="aboutCompany-chart-item">
-                           <h1>100</h1>
-                            <p>выполненные заказы</p>
+                            <h1>100</h1>
+                            <p>{t("aboutCompany.chart.i1")}</p>
+                        </div>
+                        <div className="aboutCompany-chart-item">
+                            <h1>100</h1>
+                            <p>{t("aboutCompany.chart.i2")}</p>
 
                         </div>
                         <div className="aboutCompany-chart-item">
-                           <h1>70%</h1>
-                            <p>выбрали работу с нами на постоянной основе</p>
+                            <h1>70%</h1>
+                            <p>{t("aboutCompany.chart.i3")}</p>
 
                         </div>
                         <div className="aboutCompany-chart-item">
-                           <h1>10 лет</h1>
-                            <p>успешной работы на рынке</p>
-                       </div>
+                            <h1>10 {t("aboutCompany.chart.year")}</h1>
+                            <p>{t("aboutCompany.chart.i4")}</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -168,12 +216,25 @@ const Home = () => {
                 <div className="container">
                     <div className="contact-box">
                         <div className="contact-box-left">
-                            <h1><span>Стремитесь</span>, чтобы ваш бизнес  <span>приносил</span> высокий результат <span>24/7</span> –для этого мы с вами в <span>команде!</span></h1>
-                            <p>UzLeader Cargo – детально расскажут каждом шаге партнёрства во всех деталях и помогут вам принять решение.</p>
+                            {langStorage === 'ru' || langStorage === "ru-RU" ? (
+                                <h1><span>Стремитесь</span>, чтобы ваш бизнес <span>приносил</span> высокий
+                                    результат <span>24/7</span> – для этого мы с вами в <span>команде!</span></h1>
+                            ) : ('')}
+                            {langStorage === 'uz' || langStorage === "uz-UZ" ? (
+                                <h1><span>Intiling</span>, biznesingiz <span>24/7</span> yuqori natija <span>berishi</span> uchun
+                                    – buning uchun biz siz bilan <span>bir jamoada!</span></h1>
+                            ) : ('')}
+                            {langStorage === 'en' || langStorage === "en-EN" ? (
+                                <h1><span>Strive</span> for your business to <span>deliver</span> high results <span>24/7</span>
+                                    – that's why we are in <span>team</span> with you!</h1>
+                            ) : ('')}
+
+
+                            <p>{t('contact.subtitle')}</p>
                         </div>
                         <div className="contact-box-right">
                             <div className="contact-form">
-                                <Input placeholder={'Ваше имя'}/>
+                                <Input placeholder={t('contact.username')}/>
                                 <Input placeholder={"+998"}
                                        value={initialState?.tellNumber}
                                        type={'tell'}
@@ -195,7 +256,7 @@ const Home = () => {
                                            setInitialState({...initialState, tellNumber: formattedNumber});
                                        }}
                                 />
-                                <button>отправить</button>
+                                <button>{t('contact.send')}</button>
                             </div>
                         </div>
                     </div>

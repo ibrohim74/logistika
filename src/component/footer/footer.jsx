@@ -1,7 +1,9 @@
 import React from 'react';
 import './footer.css'
+import {useTranslation} from "react-i18next";
 
 const Footer = () => {
+    const {t} = useTranslation();
     return (
         <div className={'container'}>
 
@@ -15,17 +17,16 @@ const Footer = () => {
                 </div>
                 <div className="footer-box-right">
                     <div className="footer-box-right-top">
-                        <p>При вопросах – звоните по телефонам или напишите по телеграм
-                            Мы на связи каждый день с 10:00 до 18:00</p>
+                        <p>{t('footer.title')}</p>
                         <h1><span>+998 99 123 45 67</span></h1>
                     </div>
                     <div className="footer-box-right-bottom">
                         <a className={"button gradient-border"} href="#">
-                            <span><i className="far fa-envelope-open"></i> отправить сообщение по почте</span>
+                            <span><i className="far fa-envelope-open"></i> {t('footer.mail')}</span>
                             <span>office@uzleadercargo.com</span>
                         </a>
                         <a className={"button gradient-border"} href="#">
-                            <span><i className="far fa-envelope-open"></i> позвонить сейчас</span>
+                            <span><i className="fa fa-phone" ></i> {t('footer.call')}</span>
                             <span>+998 99 123 45 67</span>
                         </a>
                     </div>
