@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import React, {Suspense, useState} from 'react';
 import "./home.css"
 import {Swiper, SwiperSlide} from 'swiper/react';
 // Import Swiper styles
@@ -15,10 +15,12 @@ import {ArrowRightOutlined, EnterOutlined} from "@ant-design/icons";
 import PriceCalc from "./priceCalc.jsx";
 import {Canvas} from "@react-three/fiber";
 import {Environment, OrbitControls} from "@react-three/drei";
-import {Car} from "../../component/Scene";
 
+import mapPhoto from '../../assets/pngegg.png'
+import {Input} from "antd";
 
 const Home = () => {
+    const [initialState , setInitialState] = useState({})
     return (
         <div>
             <Navbar/>
@@ -38,10 +40,12 @@ const Home = () => {
                 >
                     <SwiperSlide>
                         <img
-                            src="https://assets-global.website-files.com/626c0bf09f5203e8159eaaeb/6377b4b730f6adad87e0e3c6_1.jpg" loading={"lazy"}/>
+                            src="https://assets-global.website-files.com/626c0bf09f5203e8159eaaeb/6377b4b730f6adad87e0e3c6_1.jpg"
+                            loading={"lazy"}/>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="https://corp.uzairways.com/sites/default/files/inline-images/img_8296_0.jpg" loading={"lazy"}/>
+                        <img src="https://corp.uzairways.com/sites/default/files/inline-images/img_8296_0.jpg"
+                             loading={"lazy"}/>
                     </SwiperSlide>
                 </Swiper>
 
@@ -88,26 +92,111 @@ const Home = () => {
             <PriceCalc/>
 
             <section className={' car'}>
+                <div className="car-opacity"></div>
                 <div className="container">
-                    <h1>ВЫ ВИДИТЕ <span>ПОЛНОЕ СОПРОВОЖДЕНИЕ</span> ДОСТАВКИ – С ТОЧКИ А ДО ТОЧКИ B. КАК ГРУЗЫ <span>БЕРЕЖНО РАЗМЕЩЕНЫ</span> НА
-                        ФУРАХ
-                        И КАК ОТБЫВАЮТ СО СКЛАДА В СТРОГОМ СООТВЕТСТВИИ СО СТАНДАРТАМИ ISO – 9000.</h1>
+                    <div className="car-title">
+                        <h1>ВЫ ВИДИТЕ <span>ПОЛНОЕ СОПРОВОЖДЕНИЕ</span> ДОСТАВКИ – С ТОЧКИ А ДО ТОЧКИ B. КАК
+                            ГРУЗЫ <span>БЕРЕЖНО РАЗМЕЩЕНЫ</span> НА
+                            ФУРАХ
+                            И КАК ОТБЫВАЮТ СО СКЛАДА В СТРОГОМ СООТВЕТСТВИИ СО СТАНДАРТАМИ ISO – 9000.</h1>
+                    </div>
+                </div>
+            </section>
+            <section className={'aboutCompany'}>
+                <div className="container">
+                    <div className="aboutCompany-title">
+                        <h1>Ваш <span>Проект</span> – Наш <span>Приоритет</span></h1>
+                        <p>В Thompson Company мы придаем особое значение каждому вашему проекту, обеспечивая внимание к
+                            деталям и индивидуальный подход. С нами вы получаете наиболее оптимальные условия доставки и
+                            решения, которые соответствуют вашим потребностям.</p>
+                    </div>
+                    <div className="aboutCompany-box">
+                        <div className="box">
+                            <span></span>
+                            <div className="content">
+                                <h2>Эксперты по Логистике и Доставке</h2>
+                                <p>Наша команда состоит из профессионалов, которые специализируются на работе с грузами
+                                    различных видов и размеров. Благодаря нашему опыту и знаниям, мы предлагаем лучшие
+                                    решения в области международной логистики и доставки грузов.</p>
 
-                    {/*<Canvas className={'canvas'}>*/}
-                    {/*    <ambientLight/>*/}
-                    {/*    <spotLight intensity={0.9} angle={0.1} penumber={1} position={[10, 15, 10]} castShadow/>*/}
-                    {/*    <Suspense fallback={'loading'}>*/}
-                    {/*        <Car/>*/}
-                    {/*    </Suspense>*/}
+                            </div>
+                        </div>
+                        <div className="box">
+                            <span></span>
+                            <div className="content">
+                                <h2> Индивидуальные Логистические Решения</h2>
+                                <p>Мы предоставляем комплексные логистические решения, адаптированные под ваши нужды.
+                                    Наша цель – обеспечить надежную и эффективную доставку вашего груза, используя
+                                    индивидуальный подход к каждому проекту.</p>
+                            </div>
+                        </div>
+                        <div className="box">
+                            <span></span>
+                            <div className="content">
+                                <h2>Надежность и Эффективность</h2>
+                                <p>Thompson Company – это ваш надежный партнер в логистике. Мы стремимся предложить
+                                    наилучшие условия для каждого клиента, гарантируя своевременную и безопасную
+                                    доставку вашего груза.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="aboutCompany-chart">
+                       <div className="aboutCompany-chart-item">
+                           <h1>100</h1>
+                          <p>довольный клиенты</p>
+                       </div>
+                        <div className="aboutCompany-chart-item">
+                           <h1>100</h1>
+                            <p>выполненные заказы</p>
 
-                    {/*    <OrbitControls*/}
-                    {/*        enablePan={false}*/}
-                    {/*        enableZoom={false}*/}
-                    {/*        enableDamping={true}*/}
-                    {/*        autoRotate={true}*/}
-                    {/*        minPolarAngle={Math.PI / 2} // Vertikal harakatni faqat x o'qi bo'yicha cheklash*/}
-                    {/*        maxPolarAngle={Math.PI / 2}/>*/}
-                    {/*</Canvas>*/}
+                        </div>
+                        <div className="aboutCompany-chart-item">
+                           <h1>70%</h1>
+                            <p>выбрали работу с нами на постоянной основе</p>
+
+                        </div>
+                        <div className="aboutCompany-chart-item">
+                           <h1>10 лет</h1>
+                            <p>успешной работы на рынке</p>
+                       </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="contact">
+                <div className="container">
+                    <div className="contact-box">
+                        <div className="contact-box-left">
+                            <h1><span>Стремитесь</span>, чтобы ваш бизнес  <span>приносил</span> высокий результат <span>24/7</span> –для этого мы с вами в <span>команде!</span></h1>
+                            <p>UzLeader Cargo – детально расскажут каждом шаге партнёрства во всех деталях и помогут вам принять решение.</p>
+                        </div>
+                        <div className="contact-box-right">
+                            <div className="contact-form">
+                                <Input placeholder={'Ваше имя'}/>
+                                <Input placeholder={"+998"}
+                                       value={initialState?.tellNumber}
+                                       onChange={e => {
+                                           const formattedValue = e.target.value.replace(/\D/g, ''); // faqat raqamlarni qabul qilish
+                                           let formattedNumber = '+998';
+                                           if (formattedValue.length > 3) {
+                                               formattedNumber += ' ' + formattedValue.substring(3, 5);
+                                           }
+                                           if (formattedValue.length > 5) {
+                                               formattedNumber += ' ' + formattedValue.substring(5, 8);
+                                           }
+                                           if (formattedValue.length > 8) {
+                                               formattedNumber += ' ' + formattedValue.substring(8, 10);
+                                           }
+                                           if (formattedValue.length > 10) {
+                                               formattedNumber += ' ' + formattedValue.substring(10, 12);
+                                           }
+                                           setInitialState({...initialState, tellNumber: formattedNumber});
+                                       }}
+                                />
+                                <button>отправить</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>

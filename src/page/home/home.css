@@ -92,7 +92,11 @@ section h1 span {
     -webkit-background-clip: text;
     -webkit-text-fill-color: rgba(0, 0, 0, 0);
 }
-.about {background: #031426}
+
+.about {
+    background: #031426
+}
+
 .about-list {
     width: 100%;
     display: flex;
@@ -131,43 +135,50 @@ section h1 span {
     color: lightgreen;
 }
 
-.calc{
+.calc {
     width: 100%;
     background: white;
 }
-.calc-box{
+
+.calc-box {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
-.calc-box form{
+
+.calc-box form {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: start;
 }
-.calc-box .box-input{
+
+.calc-box .box-input {
     width: 45%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
-.calc-box input , .calc-box Select{
+
+.calc-box input, .calc-box Select {
     width: 100%;
     height: 50px;
     /*margin: 10px 0;*/
 }
-.input{
+
+.input {
     width: 100%;
 }
-.priceCalc-send{
+
+.priceCalc-send {
     margin: 50px 0;
     width: 100%;
 }
-.priceCalc-send button{
+
+.priceCalc-send button {
     width: 200px;
     padding: 20px 0;
     border: none;
@@ -177,50 +188,324 @@ section h1 span {
     border-radius: 20px;
     cursor: pointer;
 }
-.calc-box h1{color: #031426;
-    font-weight: 500; text-align: center}
-.calc-box h1 span{
+
+.calc-box h1 {
+    color: #031426;
+    font-weight: 500;
+    text-align: center
+}
+
+.calc-box h1 span {
     background: linear-gradient(to right, #1AA0EA 0%, #E4007D 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: rgba(0, 0, 0, 0);
 }
 
-.car{
+.car {
+    position: relative;
     width: 100%;
-    background: #031426;
+    height: 400px;
+    background-size: 100%;
+    padding: 0 !important;
+    background: url("../../assets/img/truckHome.jpeg") center center;
 }
-.canvas {
+
+.car-opacity {
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+}
+
+.car .car-title {
+    position: absolute;
+    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 400px !important;
+    flex-direction: column;
+    height: 100%;
+    width: 90%;
 }
+
+
+.aboutCompany {
+    background: #031426;
+    color: white;
+    padding-bottom: 50px;
+}
+
+.aboutCompany-title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.aboutCompany-title p {
+    width: 70%;
+}
+
+.aboutCompany-box {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.container .box {
+    position: relative;
+    width: 320px;
+    height: 400px;
+    color: #fff;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 30px;
+    transition: 0.5s;
+}
+
+.container .box:hover {
+    transform: translateY(-20px);
+}
+
+.container .box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #ffbc00, #ff0058);
+}
+
+.container .box::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #ffbc00, #ff0058);
+    filter: blur(30px);
+}
+
+.container .box:nth-child(2)::before,
+.container .box:nth-child(2)::after {
+    background: linear-gradient(315deg, #03a9f4, #ff0058);
+}
+
+.container .box:nth-child(3)::before,
+.container .box:nth-child(3)::after {
+    background: linear-gradient(315deg, #4dff03, #00d0ff);
+}
+
+.container .box span {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2;
+}
+
+.container .box span::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+}
+
+.container .box .content {
+    position: relative;
+    z-index: 10;
+    padding: 20px 40px;
+}
+
+.container .box .content h2 {
+    font-size: 2em;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.container .box .content p {
+    font-size: 1em;
+    color: #fff;
+    margin-bottom: 10px;
+    line-height: 1.4em;
+}
+
+.container .box .content a {
+    display: inline-block;
+    font-size: 1.1em;
+    color: #111;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+
+.aboutCompany-chart {
+    display: flex;
+    justify-content: space-around;
+
+    width: 100%;
+    margin-top: 50px;
+}
+
+.aboutCompany-chart-item h1 {
+    font-size: 40px;
+    margin-bottom: 0;
+    background: linear-gradient(to right, #1AA0EA 0%, #E4007D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: rgba(0, 0, 0, 0);
+}
+
+.about-list ul:nth-child(2) li:nth-child(3) {
+    border-bottom: none
+}
+
+.about-list ul:nth-child(1) li:nth-child(4) {
+    border-bottom: none
+}
+
+
+.contact-box {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    margin-bottom: 100px;
+}
+
+.contact-box-left, .contact-box-right {
+    width: 40%;
+}
+
+.contact-box-left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+
+.contact-box-left h1 {
+    color: #031426;
+    margin: 0;
+    font-weight: 500;
+}
+.contact-box-left p {
+    color: #939393;
+    width: 80%;
+}
+
+
+.contact-box-right{
+    background: #031426;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
+    flex-direction: column;
+
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;}
+
+.contact-box-right input{
+    margin: 15px 0;
+    height: 40px;
+}
+.contact-box-right button{
+    width: 40%;
+    height: 40px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: #1AA0EA;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+}
+
 @media screen and (max-width: 800px) {
     .header_content {
         width: 90%;
         top: 20%
     }
-    .header_content h1{
+
+    .header_content h1 {
         font-size: 40px;
     }
+
     .header_content p {
         font-size: 18px;
     }
 
-    section h1{
+    section h1 {
         width: 100%;
         font-size: 18px;
     }
-    .about-list{flex-direction: column}
-    .about ul{width: 100%}
-    .calc-box form{
+
+    .about-list {
+        flex-direction: column
+    }
+
+    .about ul {
+        width: 100%
+    }
+
+    .calc-box form {
         flex-direction: column;
     }
-    .calc-box .box-input{
+
+    .calc-box .box-input {
         width: 100%;
     }
-    .input{
 
+    .aboutCompany-title p {
+        width: 100%;
+    }
+
+    .aboutCompany-box {
+        flex-direction: column;
+    }
+
+    .aboutCompany-chart {
+        flex-direction: column;
+        text-align: center;
+        width: 100%;
+    }
+
+    .aboutCompany-chart-item {
+        display: flex;
+        width: 100%;
+        align-items: center;
+
+    }
+
+    .aboutCompany-chart-item h1 {
+        width: 50%;
+        display: flex
+    }
+
+    .aboutCompany-chart-item p {
+        width: 50%;
+        display: flex;
+        justify-content: flex-end;
+        text-align: right
+    }
+
+    .about-list ul:nth-child(1) li:nth-child(4) {
+        border-bottom: 1px #bebebe solid;
     }
 }
