@@ -60,6 +60,7 @@ const PriceCalc = () => {
                                 <Typography.Title level={5}>Введите номер телефона</Typography.Title>
                                 <Input placeholder={"+998"}
                                        value={initialState?.contact}
+                                       type={'tell'}
                                        onChange={e => {
                                            const formattedValue = e.target.value.replace(/\D/g, ''); // faqat raqamlarni qabul qilish
                                            let formattedNumber = '+998';

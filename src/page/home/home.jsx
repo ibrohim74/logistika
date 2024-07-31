@@ -175,6 +175,7 @@ const Home = () => {
                                 <Input placeholder={'Ваше имя'}/>
                                 <Input placeholder={"+998"}
                                        value={initialState?.tellNumber}
+                                       type={'tell'}
                                        onChange={e => {
                                            const formattedValue = e.target.value.replace(/\D/g, ''); // faqat raqamlarni qabul qilish
                                            let formattedNumber = '+998';
