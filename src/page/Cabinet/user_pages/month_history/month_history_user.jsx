@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import style from './month_history_user.module.css';
 import FilterTable from "../../../../component/filterTable/filterTable.jsx";
 import { Table } from "antd";
-import * as XLSX from 'xlsx';
 import { Excel } from "antd-table-saveas-excel";
+import {GetExcelAPI, Month_historyAPI} from "./MonthUserAPI.js";
+import $API from "../../../../utils/http.js";
 
-// Function to get the current month's name
 const getCurrentMonthName = () => {
     const monthNames = [
         "январь", "февраль", "март", "апрель", "май", "июнь",
@@ -15,87 +15,112 @@ const getCurrentMonthName = () => {
     return monthNames[currentMonthIndex];
 };
 
-// Columns configuration for the Table
 const columns = [
-    { title: 'товар ID', dataIndex: 'id', key: 'id' },
-    { title: 'наименование', dataIndex: 'titleProduct', key: 'titleProduct' },
-    { title: 'места', dataIndex: 'places', key: 'places' },
-    { title: 'вид', dataIndex: 'view', key: 'view' },
-    { title: 'куб', dataIndex: 'cube', key: 'cube' },
-    { title: 'кг', dataIndex: 'kg', key: 'kg' },
-    { title: 'куб/кг', dataIndex: 'cube_kg', key: 'cube_kg' },
-    { title: 'цена', dataIndex: 'price', key: 'price' },
-    { title: 'оплата', dataIndex: 'payment', key: 'payment' },
-    { title: 'долг клиента', dataIndex: 'debt', key: 'debt' },
-    { title: 'откуда', dataIndex: 'where', key: 'where' },
-    { title: 'дата', dataIndex: 'date', key: 'date' },
-    { title: 'машина', dataIndex: 'transport', key: 'transport' },
-    { title: 'Текущее местоположение', dataIndex: 'current_place', key: 'current_place' },
-    { title: 'Status', dataIndex: 'status', key: 'status' },
+    { title: 'товар ID', dataIndex: 'id', key: 'id', width: 100 },
+    { title: 'наименование', dataIndex: 'title', key: 'title', width: 200 },
+    { title: 'места', dataIndex: 'places', key: 'places', width: 150 },
+    { title: 'вид', dataIndex: 'view', key: 'view', width: 150 },
+    { title: 'куб', dataIndex: 'cube', key: 'cube', width: 100 },
+    { title: 'кг', dataIndex: 'kg', key: 'kg', width: 100 },
+    { title: 'куб/кг', dataIndex: 'cube_kg', key: 'cube_kg', width: 120 },
+    { title: 'цена', dataIndex: 'price', key: 'price', width: 120 },
+    { title: 'оплата', dataIndex: 'payment', key: 'payment', width: 120 },
+    { title: 'долг клиента', dataIndex: 'debt', key: 'debt', width: 150 },
+    { title: 'откуда', dataIndex: 'where_from', key: 'where_from', width: 150 },
+    {
+        title: 'дата',
+        dataIndex: 'date',
+        key: 'date',
+        width: 120,
+        render: (date) => {
+            const formattedDate = new Date(date).toLocaleDateString('ru-RU', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+            });
+            return formattedDate;
+        },
+    },    { title: 'машина', dataIndex: 'transport', key: 'transport', width: 150 },
+    { title: 'Текущее местоположение', dataIndex: 'current_place', key: 'current_place', width: 200 },
+    { title: 'Status', dataIndex: 'status', key: 'status', width: 120 },
 ];
 
-const generateDummyData = (numItems) => {
-    // Generates dummy data for testing
-    return Array.from({ length: numItems }, (_, index) => ({
-        id: index + 1,
-        titleProduct: `Product ${index + 1}`,
-        places: `${index * 10}`,
-        view: "K",
-        cube: `${index + 5}`,
-        kg: `${(index + 1) * 100}`,
-        cube_kg: "0.01",
-        price: `${(index + 1) * 1000}`,
-        payment: index % 2 === 0 ? "Paid" : "Unpaid",
-        debt: `${index * 50}`,
-        where: "Location " + (index + 1),
-        date: new Date().toLocaleDateString(),
-        transport: index % 2 === 0 ? "Truck" : "Van",
-        current_place: index % 2 === 0 ? "Китая" : "Кыргызстан",
-        status: index % 2 === 0 ? "Завершен" : "на складе Китая",
-    }));
-};
 
 const MonthHistoryUser = () => {
-    const [products, setProducts] = useState(generateDummyData(10));
-    const [user, setUser] = useState({ username: "", role: "" });
-    const [filteredProducts, setFilteredProducts] = useState(products);
+    const [products, setProducts] = useState([]);
+    const [user, setUser] = useState({ username: "", role: "", uuid: "" });
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 10,
+        total: 0,
+    });
+    const [loading, setLoading] = useState(false);
 
     const handleFilterChange = (filteredData) => {
         setFilteredProducts(filteredData);
     };
 
-    useEffect(() => {
-        const userDataString = window.localStorage.getItem('user');
-        if (userDataString) {
-            try {
-                const userData = JSON.parse(userDataString);
-                setUser({
-                    username: userData.username || "",
-                    role: userData.role || ""
-                });
-            } catch (error) {
-                console.error('Error parsing user data:', error);
+    const fetchProducts = async (page = 1) => {
+        setLoading(true);
+        try {
+            const res = await Month_historyAPI(user.uuid, page);
+            if (res.status === 200) {
+                setProducts(res.data.results);
+                setFilteredProducts(res.data.results);
+                setPagination(prevPagination => ({
+                    ...prevPagination,
+                    total: res.data.count,
+                    current: page,
+                }));
+            } else {
+                console.error('Unexpected response status:', res.status);
             }
+        } catch (e) {
+            console.error('Error fetching products data:', e);
+        } finally {
+            setLoading(false);
         }
+    };
+
+    const handleTableChange = (pagination) => {
+        const  current = pagination;
+        console.log(current)
+        if (user?.uuid) {
+            fetchProducts(current);
+        }
+    };
+
+    useEffect(() => {
+        const getUserData = async () => {
+            try {
+                const res = await $API.get('/auth/user-info/');
+                setUser({ username: res.data.username, role: res.data.role, uuid: res.data.uuid });
+            } catch (e) {
+                console.error('Error fetching user data:', e);
+            }
+        };
+        getUserData();
     }, []);
+
+    useEffect(() => {
+        if (user.uuid) {
+            fetchProducts(pagination.current);
+        }
+    }, [user.uuid]);
 
     return (
         <div className={style.products_table}>
             <FilterTable
                 products={products}
+                uuid={user.uuid}
+                type={'user_month'}
                 onFilterChange={handleFilterChange}
             />
 
             <div className={style.download_excel_btn}>
                 <h1>{getCurrentMonthName()}</h1>
-                <button onClick={() => {
-                    const excel = new Excel();
-                    excel
-                        .addSheet('test')
-                        .addColumns(columns)
-                        .addDataSource(products, { str2Percent: true })
-                        .saveAs(`${user?.username}-${getCurrentMonthName()}.xlsx`);
-                }}>
+                <button onClick={() => {GetExcelAPI()}}>
                     скачать в формате excel
                 </button>
             </div>
@@ -106,10 +131,12 @@ const MonthHistoryUser = () => {
                 dataSource={filteredProducts}
                 rowKey="id"
                 pagination={{
-                    pageSize: 10, // Number of items per page
-                    showSizeChanger: true, // Allow changing page size
-                    pageSizeOptions: ['10', '20', '30', '50'] // Options for page size
+                    current: pagination.current,
+                    pageSize: pagination.pageSize,
+                    total: pagination.total,
+                    onChange: handleTableChange,
                 }}
+                loading={loading}
             />
         </div>
     );

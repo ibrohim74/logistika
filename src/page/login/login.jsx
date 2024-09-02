@@ -3,6 +3,7 @@ import './login.css';
 import truck from '../../assets/img/login_truck.png';
 import { notification } from "antd";
 import { CABINET, CURRENT_MONTH_USER, USER_LIST_ADMIN } from "../../utils/const.jsx";
+import {LoginAPI} from "./loginAPI.js";
 
 const Login = () => {
     const [api, contextHolder] = notification.useNotification();
@@ -43,21 +44,21 @@ const Login = () => {
                 description: 'Please enter a password.',
             });
         } else {
-            // Save user data to local storage
-            window.localStorage.setItem('user', JSON.stringify({
-                username: initialState.username,
-                role: initialState.role
-            }));
+            LoginAPI(initialState).then(r => {
+               if (r.status === 200){
+                   window.localStorage.setItem('user', r.data.access);
+                   if (r.data.role === 'user') {
+                       window.location.assign(CABINET + CURRENT_MONTH_USER);
+                   } else if (r.data.role === 'admin') {
+                       window.location.assign(CABINET + USER_LIST_ADMIN);
+                   }
+               }
+            })
 
-            // Redirect based on user role
-            if (initialState.role === 'user') {
-                window.location.assign(CABINET + CURRENT_MONTH_USER);
-            } else if (initialState.role === 'admin') {
-                window.location.assign(CABINET + USER_LIST_ADMIN);
-            }
+
         }
     };
-
+    console.log(initialState)
     return (
         <div className='login-box'>
             {contextHolder}

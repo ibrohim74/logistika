@@ -49,9 +49,7 @@ const FilterTableUser = ({ users, onFilterChange }) => {
                         <path d="M1 5.5C1.00253 10.0155 4.10614 13.938 8.5 14.979V21.25C8.5 22.4926 9.50736 23.5 10.75 23.5C11.9926 23.5 13 22.4926 13 21.25V14.979C17.3939 13.938 20.4975 10.0155 20.5 5.5" stroke="#A6A6A6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                 </div>
-                <div className={style.filterBox_item}>
-                    <input type="number" placeholder="ID" value={filterValues.id} onChange={handleIdChange} />
-                </div>
+
                 <div className={style.filterBox_item}>
                     <input type="text" placeholder="Username" value={filterValues.usernames} onChange={handleUsernameChange} />
                 </div>

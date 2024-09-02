@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "./navbar.css";
-import logo from "../../assets/img/rsz_logo.png";
+import logo from "../../assets/img/logoUzLeader.png";
 import {ArrowRightOutlined, CloseOutlined, DownOutlined, MenuOutlined} from "@ant-design/icons";
 import {Dropdown, Space} from "antd";
 import {useLanguage} from "../../utils/lang/LangContext.jsx";

@@ -1,13 +1,17 @@
 import RouterIndex from "./utils/RouterIndex.jsx";
 
-
 function App() {
 
-  return (
 
-        <RouterIndex/>
+    return (
+        <>
 
-  )
+
+            <RouterIndex/>
+        </>
+
+
+    )
 }
 
 export default App

@@ -5,14 +5,9 @@ import RightMenu from "./RightMenu.jsx";
 import { MenuOutlined } from "@ant-design/icons";
 import { useLocation } from "react-router-dom";
 import './layoutNav.css'
-import logo from '../../../../assets/img/rsz_logo.png'
-const LayoutNav = () => {
+import logo from '../../../../assets/img/logoUzLeader.png'
+const LayoutNav = ({user}) => {
     const [visible, setVisible] = useState(false);
-    const [user, setUser] = useState({
-        username: "",
-        role: ""
-    });
-
     const showDrawer = () => {
         setVisible(!visible);
     };
@@ -29,20 +24,6 @@ const LayoutNav = () => {
 
 
 
-    useEffect(() => {
-        const userDataString = window.localStorage.getItem('user');
-        if (userDataString) {
-            try {
-                const userData = JSON.parse(userDataString);
-                setUser({
-                    username: userData.username || "",
-                    role: userData.role || ""
-                });
-            } catch (error) {
-                console.error('Error parsing user data:', error);
-            }
-        }
-    }, []);
 
 
 

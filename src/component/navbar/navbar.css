@@ -23,7 +23,7 @@ nav .nav-content {
 }
 
 nav .logo a img {
-    max-height: 40px; /* Adjust the height as needed */
+    max-height: 100px; /* Adjust the height as needed */
 }
 
 nav.sticky .logo a img {
@@ -206,7 +206,7 @@ nav.sticky .nav-links li:hover{
         justify-content: center;
         align-items: center;
         position: absolute;
-        left: 10px;
+        left: 0;
         z-index: 9;
     }
 

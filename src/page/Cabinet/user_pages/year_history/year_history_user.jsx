@@ -4,21 +4,16 @@ import FilterTable from "../../../../component/filterTable/filterTable.jsx";
 import { Table } from "antd";
 import * as XLSX from 'xlsx';
 import { Excel } from "antd-table-saveas-excel";
+import { Year_historyAPI } from "./YearUserAPI.js"; // Assuming you have an API module for year history
+import $API from "../../../../utils/http.js";
 
-// Function to get the current month's name
-const getCurrentMonthName = () => {
-    const monthNames = [
-        "январь", "февраль", "март", "апрель", "май", "июнь",
-        "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"
-    ];
-    const currentYearIndex = new Date().getFullYear();
-    return currentYearIndex;
-};
+// Function to get the current year
+const getCurrentYear = () => new Date().getFullYear();
 
 // Columns configuration for the Table
 const columns = [
     { title: 'товар ID', dataIndex: 'id', key: 'id' },
-    { title: 'наименование', dataIndex: 'titleProduct', key: 'titleProduct' },
+    { title: 'наименование', dataIndex: 'title', key: 'title' },
     { title: 'места', dataIndex: 'places', key: 'places' },
     { title: 'вид', dataIndex: 'view', key: 'view' },
     { title: 'куб', dataIndex: 'cube', key: 'cube' },
@@ -27,73 +22,104 @@ const columns = [
     { title: 'цена', dataIndex: 'price', key: 'price' },
     { title: 'оплата', dataIndex: 'payment', key: 'payment' },
     { title: 'долг клиента', dataIndex: 'debt', key: 'debt' },
-    { title: 'откуда', dataIndex: 'where', key: 'where' },
-    { title: 'дата', dataIndex: 'date', key: 'date' },
+    { title: 'откуда', dataIndex: 'where_from', key: 'where_from' },
+    {
+        title: 'дата',
+        dataIndex: 'date',
+        key: 'date',
+        render: (date) => new Date(date).toLocaleDateString('ru-RU', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }),
+    },
     { title: 'машина', dataIndex: 'transport', key: 'transport' },
     { title: 'Текущее местоположение', dataIndex: 'current_place', key: 'current_place' },
     { title: 'Status', dataIndex: 'status', key: 'status' },
 ];
 
-const generateDummyData = (numItems) => {
-    // Generates dummy data for testing
-    return Array.from({ length: numItems }, (_, index) => ({
-        id: index + 1,
-        titleProduct: `Product ${index + 1}`,
-        places: `${index * 10}`,
-        view: "K",
-        cube: `${index + 5}`,
-        kg: `${(index + 1) * 100}`,
-        cube_kg: "0.01",
-        price: `${(index + 1) * 1000}`,
-        payment: index % 2 === 0 ? "Paid" : "Unpaid",
-        debt: `${index * 50}`,
-        where: "Location " + (index + 1),
-        date: new Date().toLocaleDateString(),
-        transport: index % 2 === 0 ? "Truck" : "Van",
-        status: index % 2 === 0 ? "Завершен" : "на складе Китая",
-    }));
-};
-
 const YearHistoryUser = () => {
-    const [products, setProducts] = useState(generateDummyData(10));
-    const [user, setUser] = useState({ username: "", role: "" });
-    const [filteredProducts, setFilteredProducts] = useState(products);
+    const [products, setProducts] = useState([]);
+    const [user, setUser] = useState({ username: "", role: "", uuid: "" });
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 10,
+        total: 0,
+    });
+    const [loading, setLoading] = useState(false);
 
+    // Fetching products data with pagination
+    const fetchProducts = async (page = 1) => {
+        setLoading(true);
+        try {
+            const res = await Year_historyAPI(user.uuid, page); // Make sure you have this API function
+            if (res.status === 200) {
+                setProducts(res.data.results);
+                setFilteredProducts(res.data.results);
+                setPagination(prev => ({
+                    ...prev,
+                    total: res.data.count,
+                    current: page,
+                }));
+            } else {
+                console.error('Unexpected response status:', res.status);
+            }
+        } catch (e) {
+            console.error('Error fetching products data:', e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Handling filter change
     const handleFilterChange = (filteredData) => {
         setFilteredProducts(filteredData);
     };
 
+    // Handling table pagination changes
+    const handleTableChange = (pagination) => {
+        fetchProducts(pagination.current);
+    };
+
     useEffect(() => {
-        const userDataString = window.localStorage.getItem('user');
-        if (userDataString) {
+        // Fetching user data
+        const getUserData = async () => {
             try {
-                const userData = JSON.parse(userDataString);
-                setUser({
-                    username: userData.username || "",
-                    role: userData.role || ""
-                });
-            } catch (error) {
-                console.error('Error parsing user data:', error);
+                const res = await $API.get('/auth/user-info/');
+                setUser({ username: res.data.username, role: res.data.role, uuid: res.data.uuid });
+            } catch (e) {
+                console.error('Error fetching user data:', e);
             }
-        }
+        };
+        getUserData();
     }, []);
+
+    useEffect(() => {
+        // Fetch products when user data is loaded
+        if (user.uuid) {
+            fetchProducts(pagination.current);
+        }
+    }, [user.uuid]);
 
     return (
         <div className={style.products_table}>
             <FilterTable
                 products={products}
+                type={'user_year'}
                 onFilterChange={handleFilterChange}
+                uuid={user.uuid} // Pass uuid for API filtering
             />
 
             <div className={style.download_excel_btn}>
-                <h1>данные за {getCurrentMonthName()} год</h1>
+                <h1>данные за {getCurrentYear()} год</h1>
                 <button onClick={() => {
                     const excel = new Excel();
                     excel
-                        .addSheet('test')
+                        .addSheet('Yearly Data')
                         .addColumns(columns)
-                        .addDataSource(products, { str2Percent: true })
-                        .saveAs(`${user?.username}-${getCurrentMonthName()}.xlsx`);
+                        .addDataSource(filteredProducts, { str2Percent: true })
+                        .saveAs(`${user.username}-${getCurrentYear()}.xlsx`);
                 }}>
                     скачать в формате excel
                 </button>
@@ -105,10 +131,12 @@ const YearHistoryUser = () => {
                 dataSource={filteredProducts}
                 rowKey="id"
                 pagination={{
-                    pageSize: 10, // Number of items per page
-                    showSizeChanger: true, // Allow changing page size
-                    pageSizeOptions: ['10', '20', '30', '50'] // Options for page size
+                    current: pagination.current,
+                    pageSize: pagination.pageSize,
+                    total: pagination.total,
+                    onChange: handleTableChange,
                 }}
+                loading={loading}
             />
         </div>
     );

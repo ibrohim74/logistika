@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, InputNumber, Popconfirm, Table, Typography, Button } from 'antd';
+import {Form, Input, InputNumber, Popconfirm, Table, Typography, Button, DatePicker} from 'antd';
 import FilterTable from "../../../../../component/filterTable/filterTable.jsx";
 import style from "../../../user_pages/year_history/year_history_user.module.css";
 import * as XLSX from 'xlsx';
-import { Excel } from "antd-table-saveas-excel";
 import './user_page.css';
+import { useParams } from "react-router-dom";
+import { Year_historyAPI } from "../../../user_pages/year_history/YearUserAPI.js";
+import {UpdateItemProduct} from "./userPageAPI.js";
+import moment from "moment";
+import $API from "../../../../../utils/http.js";
 
 // Function to get the current month's name
 const getCurrentMonthName = () => {
@@ -28,7 +32,7 @@ const EditableCell = ({
                       }) => {
     const inputNode = inputType === 'number' ? <InputNumber /> :
         dataIndex === 'status' ? (
-            <select defaultValue={record[dataIndex]} style={{ width: "100px" }}>
+            <select value={record[dataIndex]} style={{ width: "100px" }}>
                 <option value="">Статус</option>
                 <option value="на складе Китая">на складе Китая</option>
                 <option value="на складе Узбекистана">на складе Узбекистана</option>
@@ -43,15 +47,8 @@ const EditableCell = ({
             {editing ? (
                 <Form.Item
                     name={dataIndex}
-                    style={{
-                        margin: 0,
-                    }}
-                    rules={[
-                        {
-                            required: true,
-                            message: `Please Input ${title}!`,
-                        },
-                    ]}
+                    style={{ margin: 0 }}
+                    rules={[{ required: true, message: `Please Input ${title}!` }]}
                 >
                     {inputNode}
                 </Form.Item>
@@ -64,9 +61,8 @@ const EditableCell = ({
 
 const UserPage = () => {
     const [form] = Form.useForm();
-    const [products, setProducts] = useState(generateDummyData(10));
-    const [user, setUser] = useState({ username: "", role: "" });
-    const [filteredProducts, setFilteredProducts] = useState(products);
+    const [products, setProducts] = useState([]);  // Initialize as an empty array
+    const [filteredProducts, setFilteredProducts] = useState([]);
     const [editingKey, setEditingKey] = useState('');
     const [newProduct, setNewProduct] = useState({
         titleProduct: '',
@@ -84,26 +80,17 @@ const UserPage = () => {
         current_place: '',
         status: '',
     });
-
+    const { id } = useParams();
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 10,
+        total: 0,
+    });
+    const [loading, setLoading] = useState(false);
     const isEditing = (record) => record.id === editingKey;
 
     const edit = (record) => {
         form.setFieldsValue({
-            id: '',
-            titleProduct: '',
-            places: '',
-            view: '',
-            cube: '',
-            kg: '',
-            cube_kg: '',
-            price: '',
-            payment: '',
-            debt: '',
-            where: '',
-            date: '',
-            transport: '',
-            current_place: '',
-            status: '',
             ...record,
         });
         setEditingKey(record.id);
@@ -121,13 +108,17 @@ const UserPage = () => {
 
             if (index > -1) {
                 const item = newData[index];
-                newData.splice(index, 1, {
-                    ...item,
-                    ...row,
+                newData.splice(index, 1, { ...item, ...row });
+
+                // Ensure the updated object has all necessary fields
+                const updatedItem = { ...item, ...row };
+                UpdateItemProduct(updatedItem).then((r) => {
+                    console.log(r);
+                    setProducts(newData);
+                    setFilteredProducts(newData);
+                    setEditingKey('');
                 });
-                setProducts(newData);
-                setFilteredProducts(newData);
-                setEditingKey('');
+
             } else {
                 newData.push(row);
                 setProducts(newData);
@@ -138,6 +129,7 @@ const UserPage = () => {
             console.log('Validate Failed:', errInfo);
         }
     };
+
 
     const deleteRow = (key) => {
         const newData = products.filter(item => item.id !== key);
@@ -171,7 +163,7 @@ const UserPage = () => {
                 });
 
                 const mappedRows = rows.map((row, index) => ({
-                    id: row['товар ID'] || '',
+                    id: row['товар ID'] || index + 1,  // Default to index + 1 if no ID
                     titleProduct: row['наименование'] || ``,
                     places: row['места'] || '',
                     view: row['вид'] || '',
@@ -197,7 +189,7 @@ const UserPage = () => {
 
     const handleCreate = () => {
         const newProductWithId = {
-            id: products.length + 1, // Simple ID generation
+            id: products.length ? Math.max(products.map(p => p.id)) + 1 : 1,
             ...newProduct,
         };
 
@@ -221,13 +213,31 @@ const UserPage = () => {
         });
     };
 
-    const handleExport = () => {
-        const excel = new Excel();
-        excel
-            .addSheet('Sheet1')
-            .addColumns(columns.map(col => ({ title: col.title, dataIndex: col.dataIndex })))
-            .addDataSource(products)
-            .saveAs(`${user.username}-${getCurrentMonthName()}.xlsx`);
+    const handleExport = async () => {
+        if (!id) return; // Ensure UUID is present
+        try {
+            const res = await $API.get(`/product/download-excel-filter/`, {
+                params: {
+                    year: new Date().getFullYear(),
+                    uuid:id, // Passing the UUID parameter
+                },
+                responseType: 'blob',
+            });
+
+            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `Monthly_Report_${uuid}.xlsx`;
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+        } catch (e) {
+            console.error('Error downloading file:', e);
+            api.error({
+                message: "Error",
+                description: "Failed to download the Excel file.",
+            });
+        }
     };
 
     const handleInputChange = (e) => {
@@ -239,21 +249,38 @@ const UserPage = () => {
     };
 
     const columns = [
-        { title: 'товар ID', dataIndex: 'id', key: 'id', width: '8%', editable: true },
-        { title: 'наименование', dataIndex: 'titleProduct', key: 'titleProduct', width: '10%', editable: true },
-        { title: 'места', dataIndex: 'places', key: 'places', width: '8%', editable: true },
-        { title: 'вид', dataIndex: 'view', key: 'view', width: '6%', editable: true },
-        { title: 'куб', dataIndex: 'cube', key: 'cube', width: '8%', editable: true },
-        { title: 'кг', dataIndex: 'kg', key: 'kg', width: '8%', editable: true },
-        { title: 'куб/кг', dataIndex: 'cube_kg', key: 'cube_kg', width: '8%', editable: true },
-        { title: 'цена', dataIndex: 'price', key: 'price', width: '10%', editable: true },
-        { title: 'оплата', dataIndex: 'payment', key: 'payment', width: '10%', editable: true },
-        { title: 'долг клиента', dataIndex: 'debt', key: 'debt', width: '8%', editable: true },
-        { title: 'откуда', dataIndex: 'where', key: 'where', width: '10%', editable: true },
-        { title: 'дата', dataIndex: 'date', key: 'date', width: '10%', editable: true },
-        { title: 'машина', dataIndex: 'transport', key: 'transport', width: '10%', editable: true },
-        { title: 'Текущее местоположение', dataIndex: 'current_place', key: 'current_place', width: '10%', editable: true },
-        { title: 'Status', dataIndex: 'status', key: 'status', width: '10%', editable: true },
+        { title: 'товар ID', dataIndex: 'id', key: 'id', editable: true },
+        { title: 'наименование', dataIndex: 'title', key: 'title', editable: true },
+        { title: 'места', dataIndex: 'places', key: 'places', editable: true },
+        { title: 'вид', dataIndex: 'view', key: 'view', editable: true },
+        { title: 'куб', dataIndex: 'cube', key: 'cube', editable: true },
+        { title: 'кг', dataIndex: 'kg', key: 'kg', editable: true },
+        { title: 'куб/кг', dataIndex: 'cube_kg', key: 'cube_kg', editable: true },
+        { title: 'цена', dataIndex: 'price', key: 'price', editable: true },
+        { title: 'оплата', dataIndex: 'payment', key: 'payment', editable: true },
+        { title: 'долг клиента', dataIndex: 'debt', key: 'debt', editable: true },
+        { title: 'откуда', dataIndex: 'where_from', key: 'where_from', editable: true },
+        {
+            title: 'дата',
+            dataIndex: 'date',
+            key: 'date',
+            render: (date,record) => {
+                const editable = isEditing(record);
+                console.log(editable)
+                return editable ? <DatePicker
+                    format="YYYY-MM-DD"
+                    value={date ? moment(date) : null}
+                /> : new Date(date).toLocaleDateString('ru-RU', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                })
+              },
+            editable: true
+        },
+        { title: 'машина', dataIndex: 'transport', key: 'transport', editable: true },
+        { title: 'Текущее местоположение', dataIndex: 'current_place', key: 'current_place', editable: true },
+        { title: 'Status', dataIndex: 'status', key: 'status', editable: true },
         {
             title: 'operation',
             dataIndex: 'operation',
@@ -264,9 +291,7 @@ const UserPage = () => {
                     <span>
                         <Typography.Link
                             onClick={() => save(record.id)}
-                            style={{
-                                marginRight: 8,
-                            }}
+                            style={{ marginRight: 8 }}
                         >
                             Save
                         </Typography.Link>
@@ -298,7 +323,7 @@ const UserPage = () => {
             ...col,
             onCell: (record) => ({
                 record,
-                inputType: col.dataIndex === 'status' ? 'text' : col.dataIndex === 'cube' ? 'text' : 'text',
+                inputType: col.dataIndex === 'status' ? 'text' : 'text',
                 dataIndex: col.dataIndex,
                 title: col.title,
                 editing: isEditing(record),
@@ -306,14 +331,48 @@ const UserPage = () => {
         };
     });
 
+    const fetchProducts = async (page = 1) => {
+        setLoading(true);
+        try {
+            const res = await Year_historyAPI(id, page);
+            if (res.status === 200) {
+                setProducts(res.data.results);
+                setFilteredProducts(res.data.results);
+                setPagination(prev => ({
+                    ...prev,
+                    total: res.data.count,
+                    current: page,
+                }));
+            } else {
+                console.error('Unexpected response status:', res.status);
+            }
+        } catch (e) {
+            console.error('Error fetching products data:', e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleTableChange = (page) => {
+        fetchProducts(page);
+    };
+
+    useEffect(() => {
+        if (id) {
+            fetchProducts(pagination.current);
+        }
+    }, [id, pagination.current]);
+
     return (
         <div className={style.products_table}>
             <FilterTable
                 products={products}
+                type={'user_year'}
                 onFilterChange={handleFilterChange}
+                uuid={id} // Pass uuid for API filtering
             />
 
-            <div className={style.download_excel_btn} style={{justifyContent:"flex-end"}}>
+            <div className={style.download_excel_btn} style={{ justifyContent: "flex-end" }}>
                 <button onClick={handleExport}>
                     Скачать в формате Excel
                 </button>
@@ -346,7 +405,6 @@ const UserPage = () => {
                     name="status"
                     value={newProduct.status}
                     onChange={handleInputChange}
-                    // style={{ width: "100%" }}
                 >
                     <option value="">Status</option>
                     <option value="на складе Китая">на складе Китая</option>
@@ -362,22 +420,21 @@ const UserPage = () => {
 
             <Form form={form} component={false}>
                 <Table
-                    components={{
-                        body: {
-                            cell: EditableCell,
-                        },
-                    }}
-                    className={'userPage_table'}
+                    components={{ body: { cell: EditableCell } }}
                     bordered
                     dataSource={filteredProducts}
                     columns={mergedColumns}
                     rowClassName="editable-row"
                     pagination={{
-                        onChange: cancel,
-                        pageSize: 10, // Number of items per page
-                        showSizeChanger: true, // Allow changing page size
-                        pageSizeOptions: ['10', '20', '30', '50'] // Options for page size
+                        current: pagination.current,
+                        pageSize: pagination.pageSize,
+                        total: pagination.total,
+                        onChange: handleTableChange,
                     }}
+                    scroll={{
+                        x: 1300,
+                    }}
+                    loading={loading}
                 />
             </Form>
         </div>
@@ -385,24 +442,3 @@ const UserPage = () => {
 };
 
 export default UserPage;
-
-const generateDummyData = (numItems) => {
-    // Generates dummy data for testing
-    return Array.from({ length: numItems }, (_, index) => ({
-        id: index + 1,
-        titleProduct: `tavar ${index + 1}`,
-        places: `${index * 10}`,
-        view: "K",
-        cube: `${index + 5}`,
-        kg: `${(index + 1) * 100}`,
-        cube_kg: "0.01",
-        price: `${(index + 1) * 1000}`,
-        payment: index % 2 === 0 ? "Paid" : "Unpaid",
-        debt: `${index * 50}`,
-        where: "Location " + (index + 1),
-        date: new Date().toLocaleDateString(),
-        transport: index % 2 === 0 ? "Truck" : "Van",
-        current_place: "sad",
-        status: index % 2 === 0 ? "Завершен" : "на складе Китая",
-    }));
-};
