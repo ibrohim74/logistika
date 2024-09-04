@@ -15,7 +15,7 @@ $API.interceptors.request.use(
         const token = localStorage.getItem('user');
         if (token) {
             // So'rov sarlavhasiga access token qo'shamiz
-            config.headers['Authorization'] = `Bearer ${token}`;
+            config.headers['Authorization'] = `Token ${token}`;
         }
         return config;
     },

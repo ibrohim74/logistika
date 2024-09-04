@@ -49,3 +49,9 @@
     font-weight: 500;
     margin-top: 10px;
 }
+
+.Create_User_Btn{
+    width: 20%;
+    height: 50px;
+    margin: 20px 0;
+}

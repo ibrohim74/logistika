@@ -13,8 +13,6 @@ const ListUsers = () => {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [userUpdateModal, setUserUpdateModal] = useState(false);
     const [createUserModal, setCreateUserModal] = useState(false);
-    const [userMonthModal, setUserMonthModal] = useState(false);
-    const [userYearModal, setUserYearModal] = useState(false);
     const [newUser, setNewUser] = useState({
         username: "",
         password: "",
@@ -23,7 +21,12 @@ const ListUsers = () => {
     const [api, contextHolder] = notification.useNotification();
     const [selectedUserUuid, setSelectedUserUuid] = useState(null);
     const [month, setMonth] = useState(new Date().getMonth() + 1); // Default to current month
-    const [year, setYear] = useState(new Date().getFullYear());
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 10,
+        total: 0,
+    });
+    const [loading, setLoading] = useState(false); // Add loading state to handle loading spinner
 
     const handleFilterChange = (filteredData) => {
         setFilteredUsers(filteredData);
@@ -47,23 +50,13 @@ const ListUsers = () => {
             key: 'month_stat',
             render: (_, record) => (
                 <Space size="small">
-                    <Button type="primary" onClick={() => openUserMonthModal(record.uuid)}>
+                    <Button type="primary" onClick={() => downloadMonth(record.uuid)}>
                         Month
                     </Button>
                 </Space>
             ),
         },
-        {
-            title: 'Year Stat',
-            key: 'year_stat',
-            render: (_, record) => (
-                <Space size="small">
-                    <Button className='year_btn' onClick={() => openUserYearModal(record.uuid)}>
-                        Year
-                    </Button>
-                </Space>
-            ),
-        },
+
         {
             title: 'View',
             key: 'view',
@@ -80,15 +73,8 @@ const ListUsers = () => {
         setUserUpdateModal(true);
     };
 
-    const openUserMonthModal = (uuid) => {
-        setSelectedUserUuid(uuid);
-        setUserMonthModal(true);
-    };
 
-    const openUserYearModal = (uuid) => {
-        setSelectedUserUuid(uuid);
-        setUserYearModal(true);
-    };
+
 
     const handleUpdateUser = async () => {
         if (currentUser.username.length <= 3) {
@@ -152,10 +138,10 @@ const ListUsers = () => {
     const downloadMonth = async (uuid) => {
         if (!uuid) return; // Ensure UUID is present
         try {
-            const res = await $API.get(`/product/download-excel-filter/`, {
+            const res = await $API.get(`/product/download-excel-filter/${uuid}/`, {
                 params: {
                     month: month,
-                    uuid:uuid, // Passing the UUID parameter
+
                 },
                 responseType: 'blob',
             });
@@ -176,46 +162,32 @@ const ListUsers = () => {
         }
     };
 
-    const downloadYear = async (uuid) => {
-        if (!uuid) return; // Ensure UUID is present
-        try {
-            const res = await $API.get(`/product/download-excel-filter/`, {
-                params: {
-                    year: year, // Adjust this parameter as needed
-                    uuid: uuid, // Passing the UUID parameter
-                },
-                responseType: 'blob',
-            });
 
-            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = `Yearly_Report_${uuid}.xlsx`;
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode.removeChild(link);
-        } catch (e) {
-            console.error('Error downloading file:', e);
-            api.error({
-                message: "Error",
-                description: "Failed to download the Excel file.",
-            });
+    const fetchUsers = async (page = 1) => {
+        setLoading(true);
+        console.log(page)
+        try {
+            const response = await GetUsersAPI(page, pagination.pageSize); // Update your API call to accept pagination parameters
+            const userData = response.data.results;
+            setUserList(userData);
+            setFilteredUsers(userData);
+            setPagination(prev => ({
+                ...prev,
+                total: response.data.count, // Update the total number of records
+                current: page, // Update the current page
+            }));
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        } finally {
+            setLoading(false);
         }
+    };
+    const handleTableChange = (page) => {
+        fetchUsers(page);
     };
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await GetUsersAPI();
-                const userData = response.data.results;
-                setUserList(userData);
-                setFilteredUsers(userData);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
-        };
-
-        fetchUsers();
+        fetchUsers(pagination.current);
     }, []);
 
     return (
@@ -303,48 +275,31 @@ const ListUsers = () => {
                 </button>
             </Modal>
 
-            {/* User Month modal */}
-            <Modal title="User Month" open={userMonthModal} onCancel={() => setUserMonthModal(false)}>
-                <div className="btn_modal_user_list">
-                    <Button onClick={() => downloadMonth(selectedUserUuid)}>Download as Excel</Button>
-                    <label className="fileUploadLabel">
-                        Upload Excel
-                        <Input
-                            type="file"
-                            accept=".xlsx, .xls"
-                            className="fileUpload"
-                        />
-                    </label>
-                </div>
-            </Modal>
 
-            {/* User Year modal */}
-            <Modal title="User Year" open={userYearModal} onCancel={() => setUserYearModal(false)}>
-                <div className="btn_modal_user_list">
-                    <Button onClick={() => downloadYear(selectedUserUuid)}>Download as Excel</Button>
-                    <label className="fileUploadLabel">
-                        Upload Excel
-                        <Input
-                            type="file"
-                            accept=".xlsx, .xls"
-                            className="fileUpload"
-                        />
-                    </label>
-                </div>
-            </Modal>
+
 
             <FilterTableUser
-                data={userList}
+                users={userList}
                 onFilterChange={handleFilterChange}
                 fields={["username"]}
             />
-
+            <Button className={'Create_User_Btn'} type={"primary"}
+            onClick={()=>setCreateUserModal(true)}
+            >Create</Button>
             <Table
                 columns={columns}
+                style={{ marginBottom: "100px" }}
                 dataSource={filteredUsers}
-                pagination={{ pageSize: 5 }}
+                pagination={{
+                    current: pagination.current,
+                    pageSize: pagination.pageSize,
+                    total: pagination.total,
+                    onChange: handleTableChange,
+                }}
+                loading={loading}
                 rowKey={record => record.uuid}
             />
+
         </div>
     );
 };

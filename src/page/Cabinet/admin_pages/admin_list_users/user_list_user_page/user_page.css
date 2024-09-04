@@ -45,10 +45,16 @@
     justify-content: space-between;
     align-items: center;
 }
-
+.create_form_userPage button{
+    display: block;
+    margin-top: 20px;
+    width: 175px;
+    height: 45px;
+}
 .create_form_userPage input {
-    width: 150px;
-    margin: 5px 0;
+    width: 48%;
+    height: 45px;
+    margin: 5px 5px;
 }
 
 .userPage_table #view, .userPage_table #cube {
@@ -68,6 +74,11 @@
     padding: 5px;
     border-radius: 10px;
     border: #bebebe solid 1px;
+    width: 48%;
+    height: 45px;
+    outline: none;
+    margin-left: 10px;
+
 }
 
 .btn_modal_user_list {

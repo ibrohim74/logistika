@@ -1,9 +1,11 @@
 import axios from "axios";
 import $API from "../../../../../utils/http.js";
 
-export const GetUsersAPI = async () => {
+export const GetUsersAPI = async (page) => {
+    console.log(page)
     try {
-        const res = await $API.get('/auth/user-list/');
+        const res = await $API.get('/auth/user-list/' , {params:{page}});
+        console.log(res)
         return res;
     } catch (error) {
         console.error('Error fetching users:', error);

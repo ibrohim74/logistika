@@ -3,34 +3,20 @@ import './login.css';
 import truck from '../../assets/img/login_truck.png';
 import { notification } from "antd";
 import { CABINET, CURRENT_MONTH_USER, USER_LIST_ADMIN } from "../../utils/const.jsx";
-import {LoginAPI} from "./loginAPI.js";
+import { LoginAPI } from "./loginAPI.js";
+import $API from "../../utils/http.js";
 
 const Login = () => {
     const [api, contextHolder] = notification.useNotification();
     const [initialState, setInitialState] = useState({
         username: "",
         password: "",
-        role: "user"
+        role:"user"
     });
 
-    useEffect(() => {
-        const userDataString = window.localStorage.getItem('user');
-        if (userDataString) {
-            try {
-                const userData = JSON.parse(userDataString);
-                // Redirect based on stored user role if already logged in
-                if (userData.role === 'user') {
-                    window.location.assign(CABINET + CURRENT_MONTH_USER);
-                } else if (userData.role === 'admin') {
-                    window.location.assign(CABINET + USER_LIST_ADMIN);
-                }
-            } catch (error) {
-                console.error('Error parsing user data:', error);
-            }
-        }
-    }, []);
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission
 
         if (!initialState.username) {
@@ -38,27 +24,65 @@ const Login = () => {
                 message: 'Error',
                 description: 'Please enter a username.',
             });
-        } else if (!initialState.password) {
+            return;
+        }
+
+        if (!initialState.password) {
             api.error({
                 message: 'Error',
                 description: 'Please enter a password.',
             });
-        } else {
-            LoginAPI(initialState).then(r => {
-               if (r.status === 200){
-                   window.localStorage.setItem('user', r.data.access);
-                   if (r.data.role === 'user') {
-                       window.location.assign(CABINET + CURRENT_MONTH_USER);
-                   } else if (r.data.role === 'admin') {
-                       window.location.assign(CABINET + USER_LIST_ADMIN);
-                   }
-               }
-            })
+            return;
+        }
 
-
+        try {
+            const response = await LoginAPI(initialState);
+            if (response.status === 200) {
+                window.localStorage.setItem('user', response.data.token);
+                console.log(response)// Store the token in JSON format
+                if (response.data.role === 'user') {
+                    window.location.assign(CABINET + CURRENT_MONTH_USER);
+                } else if (response.data.role === 'admin') {
+                    window.location.assign(CABINET + USER_LIST_ADMIN);
+                }
+            } else {
+                api.error({
+                    message: 'Login Failed',
+                    description: 'Invalid credentials. Please try again.',
+                });
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            api.error({
+                message: 'Login Error',
+                description: 'An error occurred while logging in. Please try again later.',
+            });
         }
     };
-    console.log(initialState)
+    const fetchData = async () => {
+        const userDataString = window.localStorage.getItem('user');
+        if (userDataString) {
+            try {
+                // Check if data is valid JSON
+                 // This line is just to check if parsing succeeds
+                const res = await $API.get('/auth/user-info/');
+                console.log(res)
+                // Redirect based on stored user role if already logged in
+                if (res.data.role === 'user') {
+                    window.location.assign(CABINET + CURRENT_MONTH_USER);
+                } else if (res.data.role === 'admin') {
+                    window.location.assign(CABINET + USER_LIST_ADMIN);
+                }
+            } catch (error) {
+                console.error('Error parsing user data:', error);
+                window.localStorage.removeItem("user");  // Remove the invalid data from localStorage
+            }
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [initialState]);
     return (
         <div className='login-box'>
             {contextHolder}
@@ -92,19 +116,6 @@ const Login = () => {
                             onChange={e => setInitialState({ ...initialState, password: e.target.value })}
                             value={initialState.password}
                         />
-                    </div>
-
-                    <div className="input">
-                        <label htmlFor="role">Role</label>
-                        <select
-                            id="role"
-                            name="role"
-                            onChange={e => setInitialState({ ...initialState, role: e.target.value })}
-                            value={initialState.role}
-                        >
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
-                        </select>
                     </div>
 
                     <button type="submit" className='login_btn'>Login</button>

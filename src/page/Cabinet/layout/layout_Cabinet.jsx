@@ -4,13 +4,13 @@ import {Admin_Route, User_Route} from '../../../utils/const.jsx';
 import './layout_cabinet.css'
 import LayoutNav from "./layout_navbar/LayoutNav.jsx";
 import $API from "../../../utils/http.js";
+import {jwtDecode} from "jwt-decode";
 
 const Layout_Cabinet = () => {
     const [user, setUser] = useState({
         username: "",
         role: ""
     });
-
     useEffect(() => {
         const getUserData = async () => {
             try {

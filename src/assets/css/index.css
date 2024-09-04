@@ -22,3 +22,7 @@ body{
 .ant-notification{
     z-index: 99999;
 }
+.ant-drawer-header{display: none !important}
+.ant-drawer-body{
+    margin-top: 50px;
+}

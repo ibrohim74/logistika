@@ -1,42 +1,31 @@
 import React, { useState } from 'react';
 import style from "./filterTable.module.css";
+import $API from "../../utils/http.js";
 
 const FilterTableUser = ({ users, onFilterChange }) => {
-    const [filterValues, setFilterValues] = useState({
-        id: '',
-        usernames: ''
-    });
+    const [username, setUsername] = useState('');
 
-    const handleFilter = () => {
-        let filteredData = users;
-
-        // Filter by ID
-        if (filterValues.id !== '') {
-            filteredData = filteredData.filter(item => item.id === parseInt(filterValues.id));
-        }
-
+    const handleFilter = async () => {
         // Filter by Username
-        if (filterValues.usernames !== '') {
-            filteredData = filteredData.filter(item => item.usernames.toLowerCase().includes(filterValues.usernames.toLowerCase()));
+
+        try {
+            const res = await $API.get('/auth/user-list/' , {params:{search:username}});
+            console.log(res)
+            onFilterChange(res.data.results);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            throw error;
         }
-
         // Send the filtered data back to the parent component
-        onFilterChange(filteredData);
-    };
 
-    const handleIdChange = (e) => {
-        setFilterValues({ ...filterValues, id: e.target.value });
     };
 
     const handleUsernameChange = (e) => {
-        setFilterValues({ ...filterValues, usernames: e.target.value });
+        setUsername(e.target.value);
     };
 
     const handleClearFilter = () => {
-        setFilterValues({
-            id: '',
-            usernames: ''
-        });
+        setUsername('');
         onFilterChange(users);
     };
 
@@ -51,7 +40,7 @@ const FilterTableUser = ({ users, onFilterChange }) => {
                 </div>
 
                 <div className={style.filterBox_item}>
-                    <input type="text" placeholder="Username" value={filterValues.usernames} onChange={handleUsernameChange} />
+                    <input type="text" placeholder="Username" value={username} onChange={handleUsernameChange} />
                 </div>
                 <div className={style.filterBox_item} onClick={handleClearFilter}>
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
