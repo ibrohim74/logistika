@@ -2,9 +2,11 @@ import {useState} from 'react';
 import style from "./filterTable.module.css";
 import $API from "../../utils/http.js";
 
-const FilterTable = ({setFiltrData}) => {
+const FilterTableUserPage = ({ setFiltrData }) => {
     const [filterValues, setFilterValues] = useState({title:"" , status:""});
+
     const handleFilter =  () => {
+        console.log('asdasd')
         setFiltrData(filterValues)
     };
 
@@ -18,11 +20,18 @@ const FilterTable = ({setFiltrData}) => {
     };
 
     const handleClearFilter = () => {
+        console.log(
+            'sadasdasd'
+        )
         setFilterValues({
             status: "",
             title: "",
         });
-       setFiltrData({title:"" , status:""})
+        setFiltrData({
+            status: "",
+            title: "",
+        });
+
     };
 
     return (
@@ -65,4 +74,4 @@ const FilterTable = ({setFiltrData}) => {
     );
 };
 
-export default FilterTable;
+export default FilterTableUserPage;

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import style from './month_history_user.module.css';
 import FilterTable from "../../../../component/filterTable/filterTable.jsx";
-import { Table } from "antd";
+import { Table, notification } from "antd";
 import { Excel } from "antd-table-saveas-excel";
-import {GetExcelAPI, Month_historyAPI} from "./MonthUserAPI.js";
+import { GetExcelAPI, Month_historyAPI } from "./MonthUserAPI.js";
 import $API from "../../../../utils/http.js";
 
 const getCurrentMonthName = () => {
@@ -40,11 +40,11 @@ const columns = [
             });
             return formattedDate;
         },
-    },    { title: 'машина', dataIndex: 'transport', key: 'transport', width: 150 },
+    },
+    { title: 'машина', dataIndex: 'transport', key: 'transport', width: 150 },
     { title: 'Текущее местоположение', dataIndex: 'current_place', key: 'current_place', width: 200 },
     { title: 'Status', dataIndex: 'status', key: 'status', width: 120 },
 ];
-
 
 const MonthHistoryUser = () => {
     const [products, setProducts] = useState([]);
@@ -57,14 +57,13 @@ const MonthHistoryUser = () => {
     });
     const [loading, setLoading] = useState(false);
 
-    const handleFilterChange = (filteredData) => {
-        setFilteredProducts(filteredData);
-    };
+    const [api, contextHolder] = notification.useNotification();
+    const [filtrData, setFiltrData] = useState({title:"" , status:""});
 
     const fetchProducts = async (page = 1) => {
         setLoading(true);
         try {
-            const res = await Month_historyAPI(user.uuid, page);
+            const res = await Month_historyAPI(user.uuid, page , filtrData );
             if (res.status === 200) {
                 setProducts(res.data.results);
                 setFilteredProducts(res.data.results);
@@ -83,11 +82,30 @@ const MonthHistoryUser = () => {
         }
     };
 
-    const handleTableChange = (pagination) => {
-        const  current = pagination;
-        console.log(current)
-        if (user?.uuid) {
-            fetchProducts(current);
+    const handleTableChange = (page) => {
+        fetchProducts(page);
+    };
+
+    const downloadMonth = async (uuid) => {
+        if (!uuid) return; // Ensure UUID is present
+        try {
+            const res = await $API.get(`/product/download-excel-filter/${uuid}/`, {
+                params: { month: new Date().getMonth() + 1 }, // Assuming you want the current month
+                responseType: 'blob',
+            });
+
+            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `Monthly_Report_${new Date().getMonth() + 1}.xlsx`;
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+        } catch (e) {
+            api.error({
+                message: "Error",
+                description: "Failed to download the Excel file.",
+            });
         }
     };
 
@@ -107,20 +125,18 @@ const MonthHistoryUser = () => {
         if (user.uuid) {
             fetchProducts(pagination.current);
         }
-    }, [user.uuid]);
+    }, [user.uuid , filtrData]);
 
     return (
         <div className={style.products_table}>
+            {contextHolder}
             <FilterTable
-                products={products}
-                uuid={user.uuid}
-                type={'user_month'}
-                onFilterChange={handleFilterChange}
+                setFiltrData={setFiltrData}
             />
 
             <div className={style.download_excel_btn}>
                 <h1>{getCurrentMonthName()}</h1>
-                <button onClick={() => {GetExcelAPI()}}>
+                <button onClick={() => downloadMonth(user.uuid)}>
                     скачать в формате excel
                 </button>
             </div>
@@ -135,6 +151,9 @@ const MonthHistoryUser = () => {
                     pageSize: pagination.pageSize,
                     total: pagination.total,
                     onChange: handleTableChange,
+                }}
+                scroll={{
+                    x: 1300,
                 }}
                 loading={loading}
             />

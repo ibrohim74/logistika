@@ -4,7 +4,7 @@ import FilterTableUser from "../../../../component/filterTable/filterTableUser.j
 import './list_user.css';
 import { Link } from "react-router-dom";
 import { CABINET, USER_LIST_USER_PAGE_ADMIN } from "../../../../utils/const.jsx";
-import { CreateUsersAPI, GetUsersAPI, UpdateUsersAPI } from "./API/AdminUserLIstAPI.jsx";
+import { CreateUsersAPI, DeleteUsersAPI, GetUsersAPI, UpdateUsersAPI } from "./API/AdminUserLIstAPI.jsx";
 import $API from "../../../../utils/http.js";
 
 const ListUsers = () => {
@@ -19,18 +19,24 @@ const ListUsers = () => {
         role: "user"
     });
     const [api, contextHolder] = notification.useNotification();
-    const [selectedUserUuid, setSelectedUserUuid] = useState(null);
-    const [month, setMonth] = useState(new Date().getMonth() + 1); // Default to current month
     const [pagination, setPagination] = useState({
         current: 1,
         pageSize: 10,
         total: 0,
     });
-    const [loading, setLoading] = useState(false); // Add loading state to handle loading spinner
+    const [loading, setLoading] = useState(false);
+    const [filtrUsers, setFiltrUsers] = useState();
 
-    const handleFilterChange = (filteredData) => {
-        setFilteredUsers(filteredData);
+    const handleMonthChange = (uuid, month) => {
+        const updatedMonth = month || currentMonth;
+        const updatedUserList = userList.map(user =>
+            user.uuid === uuid ? { ...user, selectedMonth: updatedMonth } : user
+        );
+        setUserList(updatedUserList);
+        setFilteredUsers(updatedUserList);
     };
+
+    const currentMonth = new Date().getMonth().toString();
 
     const columns = [
         { title: 'Username', dataIndex: 'username', key: 'username' },
@@ -46,17 +52,36 @@ const ListUsers = () => {
             ),
         },
         {
-            title: 'Month Stat',
+            title: 'Month Statistic',
             key: 'month_stat',
             render: (_, record) => (
                 <Space size="small">
-                    <Button type="primary" onClick={() => downloadMonth(record.uuid)}>
+                    <select
+                        value={record.selectedMonth || currentMonth}
+                        onChange={(e) => handleMonthChange(record.uuid, e.target.value)}
+                        className='modal_userList_select'
+                        style={{ width:150 }}
+                    >
+                        <option value="0">Yanvar</option>
+                        <option value="1">Fevral</option>
+                        <option value="2">Mart</option>
+                        <option value="3">Aprel</option>
+                        <option value="4">May</option>
+                        <option value="5">Iyun</option>
+                        <option value="6">Iyul</option>
+                        <option value="7">Avgust</option>
+                        <option value="8">Sentyabr</option>
+                        <option value="9">Oktyabr</option>
+                        <option value="10">Noyabr</option>
+                        <option value="11">Dekabr</option>
+                    </select>
+
+                    <Button type="primary" onClick={() => downloadMonth(record.uuid, record.selectedMonth , record.username)}>
                         Month
                     </Button>
                 </Space>
             ),
         },
-
         {
             title: 'View',
             key: 'view',
@@ -73,38 +98,56 @@ const ListUsers = () => {
         setUserUpdateModal(true);
     };
 
+    const handleDeleteUser = async () => {
+        try {
+            await DeleteUsersAPI(currentUser);
 
+            const updatedUserList = userList.filter(user => user.uuid !== currentUser.uuid);
+            const updatedFilteredUsers = filteredUsers.filter(user => user.uuid !== currentUser.uuid);
 
+            setUserList(updatedUserList);
+            setFilteredUsers(updatedFilteredUsers);
+            setUserUpdateModal(false);
+            api.success({
+                message: "Пользователь успешно удален",
+            });
+        } catch (e) {
+            api.error({
+                message: "Ошибка",
+                description: "Не удалось удалить пользователя."
+            });
+        }
+    };
 
     const handleUpdateUser = async () => {
         if (currentUser.username.length <= 3) {
             api.error({
-                message: "Error",
-                description: "Username must be at least 4 characters long."
+                message: "Ошибка",
+                description: "Имя пользователя должно быть длиной не менее 4 символов."
             });
             return;
         }
         try {
             const response = await UpdateUsersAPI(currentUser);
 
-            // Update only the specific user in the userList and filteredUsers
             const updatedUserList = userList.map(user =>
                 user.uuid === currentUser.uuid ? { ...user, ...response.data } : user
             );
 
             setUserList(updatedUserList);
 
-            // Update the filteredUsers list in the same way, ensuring consistency
             const updatedFilteredUsers = filteredUsers.map(user =>
                 user.uuid === currentUser.uuid ? { ...user, ...response.data } : user
             );
 
             setFilteredUsers(updatedFilteredUsers);
-
             setUserUpdateModal(false);
+            api.success({
+                message: "Пользователь обновлен успешно",
+            });
         } catch (error) {
             api.error({
-                message: "Error updating user",
+                message: "Ошибка обновления пользователя",
                 description: error.message
             });
         }
@@ -113,35 +156,45 @@ const ListUsers = () => {
     const handleCreateUser = async () => {
         if (newUser.username.length <= 3 || newUser.password.length <= 3) {
             api.error({
-                message: "Error",
-                description: "All fields must be filled out and at least 4 characters long."
+                message: "Ошибка",
+                description: "Все поля должны быть заполнены и иметь длину не менее 4 символов."
             });
             return;
         }
         try {
             const response = await CreateUsersAPI(newUser);
+
             const updatedUserList = [...userList, response.data];
             setUserList(updatedUserList);
             setFilteredUsers(updatedUserList);
             setCreateUserModal(false);
-            setNewUser({ username: "", password: "", role: "user" }); // Reset form
+            setNewUser({ username: "", password: "", role: "user" });
+            api.success({
+                message: "Новый пользователь успешно создан",
+
+            });
         } catch (error) {
             api.error({
-                message: "Error creating user",
+                message: "Ошибка создания пользователя",
                 description: error.message
             });
         }
     };
 
+    const downloadMonth = async (uuid, month , username) => {
+        const validMonth = (month !== undefined && month !== null) ? month : currentMonth;
 
-
-    const downloadMonth = async (uuid) => {
-        if (!uuid) return; // Ensure UUID is present
+        if (!uuid) {
+            api.error({
+                message: "Ошибка",
+                description: "UUID необходим для загрузки файла."
+            });
+            return;
+        }
         try {
             const res = await $API.get(`/product/download-excel-filter/${uuid}/`, {
                 params: {
-                    month: month,
-
+                    month: parseInt(validMonth, 10) + 1,
                 },
                 responseType: 'blob',
             });
@@ -149,51 +202,54 @@ const ListUsers = () => {
             const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = `Monthly_Report_${uuid}.xlsx`;
+            link.download = `Monthly_Report_${parseInt(validMonth, 10) + 1}_${username}.xlsx`;
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
+            api.success({
+                message: "файл Excel скачан",
+            });
         } catch (e) {
-            console.error('Error downloading file:', e);
             api.error({
-                message: "Error",
-                description: "Failed to download the Excel file.",
+                message: "Ошибка",
+                description: "Не удалось загрузить файл Excel.",
             });
         }
     };
 
-
     const fetchUsers = async (page = 1) => {
         setLoading(true);
-        console.log(page)
         try {
-            const response = await GetUsersAPI(page, pagination.pageSize); // Update your API call to accept pagination parameters
+            const response = await GetUsersAPI(page, filtrUsers);
             const userData = response.data.results;
             setUserList(userData);
             setFilteredUsers(userData);
             setPagination(prev => ({
                 ...prev,
-                total: response.data.count, // Update the total number of records
-                current: page, // Update the current page
+                total: response.data.count,
+                current: page,
             }));
         } catch (error) {
-            console.error('Error fetching users:', error);
+            api.error({
+                message: "Ошибка",
+                description: "Не удалось получить пользователей."
+            });
         } finally {
             setLoading(false);
         }
     };
+
     const handleTableChange = (page) => {
         fetchUsers(page);
     };
 
     useEffect(() => {
         fetchUsers(pagination.current);
-    }, []);
+    }, [pagination.current, filtrUsers]);
 
     return (
         <div>
             {contextHolder}
-            {/* User update modal */}
             <Modal
                 title="Update User"
                 open={userUpdateModal}
@@ -218,23 +274,13 @@ const ListUsers = () => {
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
                 </select>
-                <button
-                    onClick={handleUpdateUser}
-                    style={{
-                        marginTop: "10px",
-                        padding: "10px 0",
-                        borderRadius: "5px",
-                        border: "none",
-                        outline: "none",
-                        color: "white",
-                        cursor: "pointer"
-                    }}
-                >
-                    Update
-                </button>
+
+                <div className="update_userList_btns">
+                    <Button type="primary" onClick={handleUpdateUser}>Update</Button>
+                    <Button type="danger" onClick={handleDeleteUser}>Delete</Button>
+                </div>
             </Modal>
 
-            {/* Create new user modal */}
             <Modal
                 title="Create User"
                 open={createUserModal}
@@ -259,33 +305,26 @@ const ListUsers = () => {
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
                 </select>
-                <button
+                <Button
+                    type="primary"
                     onClick={handleCreateUser}
                     style={{
                         marginTop: "10px",
                         padding: "10px 0",
                         borderRadius: "5px",
                         border: "none",
-                        outline: "none",
                         color: "white",
                         cursor: "pointer"
                     }}
                 >
                     Create
-                </button>
+                </Button>
             </Modal>
 
-
-
-
-            <FilterTableUser
-                users={userList}
-                onFilterChange={handleFilterChange}
-                fields={["username"]}
-            />
-            <Button className={'Create_User_Btn'} type={"primary"}
-            onClick={()=>setCreateUserModal(true)}
-            >Create</Button>
+            <FilterTableUser setFiltrUsers={setFiltrUsers} />
+            <Button className='Create_User_Btn' type="primary" onClick={() => setCreateUserModal(true)}>
+                Create
+            </Button>
             <Table
                 columns={columns}
                 style={{ marginBottom: "100px" }}
@@ -299,7 +338,6 @@ const ListUsers = () => {
                 loading={loading}
                 rowKey={record => record.uuid}
             />
-
         </div>
     );
 };

@@ -2,22 +2,11 @@ import React, { useState } from 'react';
 import style from "./filterTable.module.css";
 import $API from "../../utils/http.js";
 
-const FilterTableUser = ({ users, onFilterChange }) => {
+const FilterTableUser = ({ setFiltrUsers }) => {
     const [username, setUsername] = useState('');
 
-    const handleFilter = async () => {
-        // Filter by Username
-
-        try {
-            const res = await $API.get('/auth/user-list/' , {params:{search:username}});
-            console.log(res)
-            onFilterChange(res.data.results);
-        } catch (error) {
-            console.error('Error fetching users:', error);
-            throw error;
-        }
-        // Send the filtered data back to the parent component
-
+    const handleFilter =  () => {
+        setFiltrUsers(username)
     };
 
     const handleUsernameChange = (e) => {
@@ -26,7 +15,7 @@ const FilterTableUser = ({ users, onFilterChange }) => {
 
     const handleClearFilter = () => {
         setUsername('');
-        onFilterChange(users);
+       setFiltrUsers()
     };
 
     return (

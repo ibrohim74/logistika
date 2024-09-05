@@ -1,8 +1,16 @@
 import $API from "../../../../utils/http.js";
 
-export const Month_historyAPI = async (uuid, page = 1) => {
+export const Month_historyAPI = async (uuid, page = 1 , filtrData) => {
+
     try {
-        const res = await $API.get(`/product/user_month/${uuid}/`, { params: { page } });
+        let params = {page: page};
+        if (filtrData?.title) {
+            params.title = filtrData.title;
+        } else if (filtrData?.status) {
+            params.status = filtrData.status;
+        }
+        console.log(params)
+        const res = await $API.get(`/product/user_month/${uuid}/`,  { params } );
         console.log(res)
         return res;
     } catch (err) {

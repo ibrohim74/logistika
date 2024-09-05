@@ -1,28 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import style from './year_history_user.module.css';
 import FilterTable from "../../../../component/filterTable/filterTable.jsx";
-import { Table } from "antd";
+import {notification, Table} from "antd";
 import * as XLSX from 'xlsx';
-import { Excel } from "antd-table-saveas-excel";
-import { Year_historyAPI } from "./YearUserAPI.js"; // Assuming you have an API module for year history
+import {Excel} from "antd-table-saveas-excel";
+import {Year_historyAPI} from "./YearUserAPI.js"; // Assuming you have an API module for year history
 import $API from "../../../../utils/http.js";
+import FilterTableUserPage from "../../../../component/filterTable/filterTableUserPage.jsx";
 
 // Function to get the current year
 const getCurrentYear = () => new Date().getFullYear();
 
 // Columns configuration for the Table
 const columns = [
-    { title: 'товар ID', dataIndex: 'id', key: 'id' },
-    { title: 'наименование', dataIndex: 'title', key: 'title' },
-    { title: 'места', dataIndex: 'places', key: 'places' },
-    { title: 'вид', dataIndex: 'view', key: 'view' },
-    { title: 'куб', dataIndex: 'cube', key: 'cube' },
-    { title: 'кг', dataIndex: 'kg', key: 'kg' },
-    { title: 'куб/кг', dataIndex: 'cube_kg', key: 'cube_kg' },
-    { title: 'цена', dataIndex: 'price', key: 'price' },
-    { title: 'оплата', dataIndex: 'payment', key: 'payment' },
-    { title: 'долг клиента', dataIndex: 'debt', key: 'debt' },
-    { title: 'откуда', dataIndex: 'where_from', key: 'where_from' },
+    {title: 'товар ID', dataIndex: 'id', key: 'id'},
+    {title: 'наименование', dataIndex: 'title', key: 'title'},
+    {title: 'места', dataIndex: 'places', key: 'places'},
+    {title: 'вид', dataIndex: 'view', key: 'view'},
+    {title: 'куб', dataIndex: 'cube', key: 'cube'},
+    {title: 'кг', dataIndex: 'kg', key: 'kg'},
+    {title: 'куб/кг', dataIndex: 'cube_kg', key: 'cube_kg'},
+    {title: 'цена', dataIndex: 'price', key: 'price'},
+    {title: 'оплата', dataIndex: 'payment', key: 'payment'},
+    {title: 'долг клиента', dataIndex: 'debt', key: 'debt'},
+    {title: 'откуда', dataIndex: 'where_from', key: 'where_from'},
     {
         title: 'дата',
         dataIndex: 'date',
@@ -33,14 +34,14 @@ const columns = [
             year: 'numeric',
         }),
     },
-    { title: 'машина', dataIndex: 'transport', key: 'transport' },
-    { title: 'Текущее местоположение', dataIndex: 'current_place', key: 'current_place' },
-    { title: 'Status', dataIndex: 'status', key: 'status' },
+    {title: 'машина', dataIndex: 'transport', key: 'transport'},
+    {title: 'Текущее местоположение', dataIndex: 'current_place', key: 'current_place'},
+    {title: 'Status', dataIndex: 'status', key: 'status'},
 ];
 
 const YearHistoryUser = () => {
     const [products, setProducts] = useState([]);
-    const [user, setUser] = useState({ username: "", role: "", uuid: "" });
+    const [user, setUser] = useState({username: "", role: "", uuid: ""});
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [pagination, setPagination] = useState({
         current: 1,
@@ -48,12 +49,12 @@ const YearHistoryUser = () => {
         total: 0,
     });
     const [loading, setLoading] = useState(false);
-
+    const [filtrData, setFiltrData] = useState({title:"" , status:""})
     // Fetching products data with pagination
     const fetchProducts = async (page = 1) => {
         setLoading(true);
         try {
-            const res = await Year_historyAPI(user.uuid, page); // Make sure you have this API function
+            const res = await Year_historyAPI(user.uuid, page , filtrData); // Make sure you have this API function
             if (res.status === 200) {
                 setProducts(res.data.results);
                 setFilteredProducts(res.data.results);
@@ -78,16 +79,44 @@ const YearHistoryUser = () => {
     };
 
     // Handling table pagination changes
-    const handleTableChange = (pagination) => {
-        fetchProducts(pagination.current);
+    const handleTableChange = (page) => {
+        fetchProducts(page);
     };
+
+    const handleExport = async () => {
+        if (!user.uuid) return;
+        try {
+            const res = await $API.get(`/product/download-excel-filter/${user.uuid}/`, {
+                params: {
+                    year: new Date().getFullYear(),
+                },
+                responseType: 'blob',
+            });
+
+            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `Year_Report_${new Date().getMonth()+1}.xlsx`;
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+        } catch (e) {
+            console.error('Error downloading file:', e);
+            notification.error({
+                message: "Ошибка",
+                description: "Не удалось скачать файл Excel.",
+            });
+        }
+    };
+
+
 
     useEffect(() => {
         // Fetching user data
         const getUserData = async () => {
             try {
                 const res = await $API.get('/auth/user-info/');
-                setUser({ username: res.data.username, role: res.data.role, uuid: res.data.uuid });
+                setUser({username: res.data.username, role: res.data.role, uuid: res.data.uuid});
             } catch (e) {
                 console.error('Error fetching user data:', e);
             }
@@ -100,34 +129,24 @@ const YearHistoryUser = () => {
         if (user.uuid) {
             fetchProducts(pagination.current);
         }
-    }, [user.uuid]);
+    }, [user.uuid , filtrData]);
 
     return (
         <div className={style.products_table}>
-            <FilterTable
-                products={products}
-                type={'user_year'}
-                onFilterChange={handleFilterChange}
-                uuid={user.uuid} // Pass uuid for API filtering
+            <FilterTableUserPage
+                setFiltrData={setFiltrData}
             />
 
             <div className={style.download_excel_btn}>
                 <h1>данные за {getCurrentYear()} год</h1>
-                <button onClick={() => {
-                    const excel = new Excel();
-                    excel
-                        .addSheet('Yearly Data')
-                        .addColumns(columns)
-                        .addDataSource(filteredProducts, { str2Percent: true })
-                        .saveAs(`${user.username}-${getCurrentYear()}.xlsx`);
-                }}>
+                <button onClick={handleExport}>
                     скачать в формате excel
                 </button>
             </div>
 
             <Table
                 columns={columns}
-                style={{ marginTop: "30px" }}
+                style={{marginTop: "30px"}}
                 dataSource={filteredProducts}
                 rowKey="id"
                 pagination={{
@@ -135,6 +154,9 @@ const YearHistoryUser = () => {
                     pageSize: pagination.pageSize,
                     total: pagination.total,
                     onChange: handleTableChange,
+                }}
+                scroll={{
+                    x: 1300,
                 }}
                 loading={loading}
             />
