@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './login.css';
 import truck from '../../assets/img/login_truck.png';
-import { notification } from "antd";
-import { CABINET, CURRENT_MONTH_USER, USER_LIST_ADMIN } from "../../utils/const.jsx";
-import { LoginAPI } from "./loginAPI.js";
+import {notification} from "antd";
+import {CABINET, CURRENT_MONTH_USER, USER_LIST_ADMIN} from "../../utils/const.jsx";
+import {LoginAPI} from "./loginAPI.js";
 import $API from "../../utils/http.js";
 
 const Login = () => {
@@ -11,13 +11,12 @@ const Login = () => {
     const [initialState, setInitialState] = useState({
         username: "",
         password: "",
-        role:"user"
+        role: "user"
     });
 
 
-
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
 
         if (!initialState.username) {
             api.error({
@@ -39,7 +38,7 @@ const Login = () => {
             const response = await LoginAPI(initialState);
             if (response.status === 200) {
                 window.localStorage.setItem('user', response.data.token);
-                console.log(response)// Store the token in JSON format
+
                 if (response.data.role === 'user') {
                     window.location.assign(CABINET + CURRENT_MONTH_USER);
                 } else if (response.data.role === 'admin') {
@@ -63,11 +62,9 @@ const Login = () => {
         const userDataString = window.localStorage.getItem('user');
         if (userDataString) {
             try {
-                // Check if data is valid JSON
-                 // This line is just to check if parsing succeeds
+
                 const res = await $API.get('/auth/user-info/');
-                console.log(res)
-                // Redirect based on stored user role if already logged in
+
                 if (res.data.role === 'user') {
                     window.location.assign(CABINET + CURRENT_MONTH_USER);
                 } else if (res.data.role === 'admin') {
@@ -75,7 +72,7 @@ const Login = () => {
                 }
             } catch (error) {
                 console.error('Error parsing user data:', error);
-                window.localStorage.removeItem("user");  // Remove the invalid data from localStorage
+                window.localStorage.removeItem("user");
             }
         }
     };
@@ -87,7 +84,7 @@ const Login = () => {
         <div className='login-box'>
             {contextHolder}
             <div className="login_truck_img">
-                <img src={truck} alt="uzbleader cargo" />
+                <img src={truck} alt="uzbleader cargo"/>
             </div>
             <div className="login-container">
                 <form onSubmit={handleSubmit}>
@@ -100,7 +97,7 @@ const Login = () => {
                             name="username"
                             placeholder='Username'
                             autoComplete='new-username'
-                            onChange={e => setInitialState({ ...initialState, username: e.target.value })}
+                            onChange={e => setInitialState({...initialState, username: e.target.value})}
                             value={initialState.username}
                         />
                     </div>
@@ -113,7 +110,7 @@ const Login = () => {
                             name="password"
                             placeholder='Password'
                             autoComplete='new-password'
-                            onChange={e => setInitialState({ ...initialState, password: e.target.value })}
+                            onChange={e => setInitialState({...initialState, password: e.target.value})}
                             value={initialState.password}
                         />
                     </div>

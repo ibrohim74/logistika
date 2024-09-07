@@ -27,21 +27,27 @@
     justify-content: center;
     align-items: center;
 }
-.logo-layout img{
+
+.logo-layout img {
     width: 100%;
     height: 100%;
 }
+
 .logo-layout a {
     display: inline-block;
     font-size: 20px;
     text-transform: capitalize;
 }
-.logo-layout h3{
-    margin: 0;}
+
+.logo-layout h3 {
+    margin: 0;
+}
+
 .navbar-menu {
     width: calc(100% - 200px);
     float: left;
 }
+
 .navbar-menu .ant-layout-header {
     padding: 0 20px;
 }
@@ -61,11 +67,13 @@
     justify-content: center;
     align-items: center;
 }
-.navbar-menu .leftMenu ul{
+
+.navbar-menu .leftMenu ul {
     width: 100%;
     display: flex;
     justify-content: center;
 }
+
 .navbar-menu .rightMenu {
     float: right;
     width: 150px;
@@ -112,8 +120,8 @@
     }
 
     .leftMenu,
-    .rightMenu ,
-    .navbar-menu .leftMenu ul{
+    .rightMenu,
+    .navbar-menu .leftMenu ul {
         display: none;
     }
 

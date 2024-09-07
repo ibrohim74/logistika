@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import style from './year_history_user.module.css';
-import FilterTable from "../../../../component/filterTable/filterTable.jsx";
 import {notification, Table} from "antd";
-import * as XLSX from 'xlsx';
-import {Excel} from "antd-table-saveas-excel";
-import {Year_historyAPI} from "./YearUserAPI.js"; // Assuming you have an API module for year history
+
+import {Year_historyAPI} from "./YearUserAPI.js";
 import $API from "../../../../utils/http.js";
 import FilterTableUserPage from "../../../../component/filterTable/filterTableUserPage.jsx";
 
-// Function to get the current year
 const getCurrentYear = () => new Date().getFullYear();
 
-// Columns configuration for the Table
+
 const columns = [
     {title: 'товар ID', dataIndex: 'id', key: 'id'},
     {title: 'наименование', dataIndex: 'title', key: 'title'},
@@ -49,12 +46,12 @@ const YearHistoryUser = () => {
         total: 0,
     });
     const [loading, setLoading] = useState(false);
-    const [filtrData, setFiltrData] = useState({title:"" , status:""})
-    // Fetching products data with pagination
+    const [filtrData, setFiltrData] = useState({title: "", status: "", places: ""})
+
     const fetchProducts = async (page = 1) => {
         setLoading(true);
         try {
-            const res = await Year_historyAPI(user.uuid, page , filtrData); // Make sure you have this API function
+            const res = await Year_historyAPI(user.uuid, page, filtrData);
             if (res.status === 200) {
                 setProducts(res.data.results);
                 setFilteredProducts(res.data.results);
@@ -68,17 +65,24 @@ const YearHistoryUser = () => {
             }
         } catch (e) {
             console.error('Error fetching products data:', e);
+            if (e?.response?.status === 404) {
+
+                const retryRes = await Year_historyAPI(user.uuid, 1, filtrData);
+                if (retryRes.status === 200) {
+                    setProducts(retryRes.data.results);
+                    setFilteredProducts(retryRes.data.results);
+                    setPagination(prev => ({
+                        ...prev,
+                        total: retryRes.data.count,
+                        current: 1,
+                    }));
+                }
+            }
         } finally {
             setLoading(false);
         }
     };
 
-    // Handling filter change
-    const handleFilterChange = (filteredData) => {
-        setFilteredProducts(filteredData);
-    };
-
-    // Handling table pagination changes
     const handleTableChange = (page) => {
         fetchProducts(page);
     };
@@ -93,10 +97,10 @@ const YearHistoryUser = () => {
                 responseType: 'blob',
             });
 
-            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = `Year_Report_${new Date().getMonth()+1}.xlsx`;
+            link.download = `Year_Report_${new Date().getFullYear()}.xlsx`;
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
@@ -110,9 +114,7 @@ const YearHistoryUser = () => {
     };
 
 
-
     useEffect(() => {
-        // Fetching user data
         const getUserData = async () => {
             try {
                 const res = await $API.get('/auth/user-info/');
@@ -125,11 +127,11 @@ const YearHistoryUser = () => {
     }, []);
 
     useEffect(() => {
-        // Fetch products when user data is loaded
+
         if (user.uuid) {
             fetchProducts(pagination.current);
         }
-    }, [user.uuid , filtrData]);
+    }, [user.uuid, filtrData]);
 
     return (
         <div className={style.products_table}>

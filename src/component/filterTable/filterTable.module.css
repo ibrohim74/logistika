@@ -25,20 +25,10 @@
     cursor: pointer;
 }
 
-/*.filterBox_item:nth-child(2) {*/
-/*    width: 100px;*/
-/*}*/
+.filterBox_item:nth-child(2) {
+    width: 100px;
+}
 
-/*.filterBox_item:nth-child(2) input {*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    border: none;*/
-/*    outline: none;*/
-/*    font-size: 14px;*/
-/*    font-weight: 700;*/
-/*    padding: 0 10px;*/
-/*    text-align: center;*/
-/*}*/
 .filterBox_item:nth-child(2) input {
     width: 100%;
     height: 100%;
@@ -47,8 +37,19 @@
     font-size: 14px;
     font-weight: 700;
     padding: 0 10px;
+    text-align: center;
+}
+.filterBox_item:nth-child(3) input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 10px;
     text-align: left;
-}.filterBox_item:nth-child(2) input::placeholder {
+
+}.filterBox_item:nth-child(3) input::placeholder {
 
     text-align: center;
 
@@ -66,16 +67,16 @@ input[type=number] {
 }
 
 .filterBox_item:nth-child(2) {
-    width: 330px;
+    width: 230px;
     padding: 0 10px !important;
 }
 
 .filterBox_item:nth-child(3) {
-    width: 250px;
+    width: 150px;
 
 }
 
-.filterBox_item:nth-child(3) select {
+.filterBox_item:nth-child(4) select {
     cursor: pointer;
     width: 100%;
     padding: 10px;
@@ -88,6 +89,8 @@ input[type=number] {
     -webkit-appearance: none; /* Safari and Chrome */
     appearance: none;
     background: url("../../assets/icons/arrowBottom.svg") no-repeat 95% 50%;
+    background-size: 10px 10px;
+    text-align: center;
 }
 
 .filterBox_item:nth-child(3) select option {
@@ -96,8 +99,8 @@ input[type=number] {
     outline: none;
 }
 
-.filterBox_item:nth-child(4) {
-    width: 300px;
+.filterBox_item:nth-child(5) {
+    width: 200px;
     border-right: none;
     display: flex;
     color: #FF4141;

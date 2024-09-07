@@ -42,23 +42,23 @@ const Navbar = ({onlyIcon = true}) => {
             </button>
             <div className="nav-content">
                 <div className="logo">
-                    <a href="#">
+                    <a href="/">
                         <img src={logo} alt="Logo"/>
                     </a>
                 </div>
                 <div className="nav-menu1">
                     <ul className="nav-links">
                         <li>
-                            <a href="#">{t('nav.home')}</a>
+                            <a href="/">{t('nav.home')}</a>
                         </li>
                         <li>
-                            <a href="#">{t('nav.about')}</a>
+                            <a href="#about">{t('nav.about')}</a>
                         </li>
                         <li>
-                            <a href="#">{t('nav.services')}</a>
+                            <a href="#services">{t('nav.services')}</a>
                         </li>
                         <li>
-                            <a href="#">{t('nav.contact')}</a>
+                            <a href="#contacts">{t('nav.contact')}</a>
                         </li>
                     </ul>
                     <ul className="nav-links">

@@ -1,5 +1,5 @@
 
-.login-box{
+.login-box {
     position: relative;
     background: #f7f8f9;
     width: 100%;
@@ -9,7 +9,8 @@
     align-items: center;
     overflow: hidden;
 }
-.login-container{
+
+.login-container {
     background: #fff;
     border-radius: 20px;
     padding: 30px 45px;
@@ -17,7 +18,7 @@
     z-index: 3;
 }
 
-.login_truck_img{
+.login_truck_img {
     position: absolute;
     width: 50%;
     height: 100%;
@@ -25,13 +26,14 @@
     bottom: -12%;
     z-index: 1;
 }
-.login_truck_img img{
+
+.login_truck_img img {
     width: 100%;
     height: 100%;
 }
 
 
-.login-container form{
+.login-container form {
     width: 100%;
     height: 100%;
     display: flex;
@@ -39,10 +41,12 @@
     align-items: center;
     flex-direction: column;
 }
-.login-container h1{
+
+.login-container h1 {
     margin-bottom: 50px;
 }
-.login-container form input{
+
+.login-container form input {
     background-color: #f7f8f9;
     border: none;
     border-radius: 10px;
@@ -54,11 +58,13 @@
     width: 95%;
     margin: 15px 0 20px 0;
 }
-.login-container form label{
+
+.login-container form label {
     font-weight: 600;
     margin-bottom: 30px !important;
 }
-.login-container form .login_btn{
+
+.login-container form .login_btn {
     background: #333;
     width: 100%;
     color: white;

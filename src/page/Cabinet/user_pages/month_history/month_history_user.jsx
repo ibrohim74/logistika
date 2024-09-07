@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import style from './month_history_user.module.css';
-import FilterTable from "../../../../component/filterTable/filterTable.jsx";
-import { Table, notification } from "antd";
-import { Excel } from "antd-table-saveas-excel";
-import { GetExcelAPI, Month_historyAPI } from "./MonthUserAPI.js";
+import {Table, notification} from "antd";
+import {Month_historyAPI} from "./MonthUserAPI.js";
 import $API from "../../../../utils/http.js";
+
+import FilterTableUserPage from "../../../../component/filterTable/filterTableUserPage.jsx";
 
 const getCurrentMonthName = () => {
     const monthNames = [
@@ -16,17 +16,17 @@ const getCurrentMonthName = () => {
 };
 
 const columns = [
-    { title: 'товар ID', dataIndex: 'id', key: 'id', width: 100 },
-    { title: 'наименование', dataIndex: 'title', key: 'title', width: 200 },
-    { title: 'места', dataIndex: 'places', key: 'places', width: 150 },
-    { title: 'вид', dataIndex: 'view', key: 'view', width: 150 },
-    { title: 'куб', dataIndex: 'cube', key: 'cube', width: 100 },
-    { title: 'кг', dataIndex: 'kg', key: 'kg', width: 100 },
-    { title: 'куб/кг', dataIndex: 'cube_kg', key: 'cube_kg', width: 120 },
-    { title: 'цена', dataIndex: 'price', key: 'price', width: 120 },
-    { title: 'оплата', dataIndex: 'payment', key: 'payment', width: 120 },
-    { title: 'долг клиента', dataIndex: 'debt', key: 'debt', width: 150 },
-    { title: 'откуда', dataIndex: 'where_from', key: 'where_from', width: 150 },
+    {title: 'товар ID', dataIndex: 'id', key: 'id', width: 100},
+    {title: 'наименование', dataIndex: 'title', key: 'title', width: 200},
+    {title: 'места', dataIndex: 'places', key: 'places', width: 150},
+    {title: 'вид', dataIndex: 'view', key: 'view', width: 150},
+    {title: 'куб', dataIndex: 'cube', key: 'cube', width: 100},
+    {title: 'кг', dataIndex: 'kg', key: 'kg', width: 100},
+    {title: 'куб/кг', dataIndex: 'cube_kg', key: 'cube_kg', width: 120},
+    {title: 'цена', dataIndex: 'price', key: 'price', width: 120},
+    {title: 'оплата', dataIndex: 'payment', key: 'payment', width: 120},
+    {title: 'долг клиента', dataIndex: 'debt', key: 'debt', width: 150},
+    {title: 'откуда', dataIndex: 'where_from', key: 'where_from', width: 150},
     {
         title: 'дата',
         dataIndex: 'date',
@@ -41,14 +41,14 @@ const columns = [
             return formattedDate;
         },
     },
-    { title: 'машина', dataIndex: 'transport', key: 'transport', width: 150 },
-    { title: 'Текущее местоположение', dataIndex: 'current_place', key: 'current_place', width: 200 },
-    { title: 'Status', dataIndex: 'status', key: 'status', width: 120 },
+    {title: 'машина', dataIndex: 'transport', key: 'transport', width: 150},
+    {title: 'Текущее местоположение', dataIndex: 'current_place', key: 'current_place', width: 200},
+    {title: 'Status', dataIndex: 'status', key: 'status', width: 120},
 ];
 
 const MonthHistoryUser = () => {
     const [products, setProducts] = useState([]);
-    const [user, setUser] = useState({ username: "", role: "", uuid: "" });
+    const [user, setUser] = useState({username: "", role: "", uuid: ""});
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [pagination, setPagination] = useState({
         current: 1,
@@ -58,12 +58,12 @@ const MonthHistoryUser = () => {
     const [loading, setLoading] = useState(false);
 
     const [api, contextHolder] = notification.useNotification();
-    const [filtrData, setFiltrData] = useState({title:"" , status:""});
+    const [filtrData, setFiltrData] = useState({title: "", status: "", places: ""});
 
     const fetchProducts = async (page = 1) => {
         setLoading(true);
         try {
-            const res = await Month_historyAPI(user.uuid, page , filtrData );
+            const res = await Month_historyAPI(user.uuid, page, filtrData);
             if (res.status === 200) {
                 setProducts(res.data.results);
                 setFilteredProducts(res.data.results);
@@ -77,6 +77,19 @@ const MonthHistoryUser = () => {
             }
         } catch (e) {
             console.error('Error fetching products data:', e);
+            if (e?.response?.status === 404) {
+
+                const retryRes = await Month_historyAPI(user.uuid, 1, filtrData);
+                if (retryRes.status === 200) {
+                    setProducts(retryRes.data.results);
+                    setFilteredProducts(retryRes.data.results);
+                    setPagination(prev => ({
+                        ...prev,
+                        total: retryRes.data.count,
+                        current: 1,
+                    }));
+                }
+            }
         } finally {
             setLoading(false);
         }
@@ -87,14 +100,14 @@ const MonthHistoryUser = () => {
     };
 
     const downloadMonth = async (uuid) => {
-        if (!uuid) return; // Ensure UUID is present
+        if (!uuid) return;
         try {
             const res = await $API.get(`/product/download-excel-filter/${uuid}/`, {
-                params: { month: new Date().getMonth() + 1 }, // Assuming you want the current month
+                params: {month: new Date().getMonth() + 1},
                 responseType: 'blob',
             });
 
-            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
             link.download = `Monthly_Report_${new Date().getMonth() + 1}.xlsx`;
@@ -113,7 +126,7 @@ const MonthHistoryUser = () => {
         const getUserData = async () => {
             try {
                 const res = await $API.get('/auth/user-info/');
-                setUser({ username: res.data.username, role: res.data.role, uuid: res.data.uuid });
+                setUser({username: res.data.username, role: res.data.role, uuid: res.data.uuid});
             } catch (e) {
                 console.error('Error fetching user data:', e);
             }
@@ -125,12 +138,12 @@ const MonthHistoryUser = () => {
         if (user.uuid) {
             fetchProducts(pagination.current);
         }
-    }, [user.uuid , filtrData]);
+    }, [user.uuid, filtrData]);
 
     return (
         <div className={style.products_table}>
             {contextHolder}
-            <FilterTable
+            <FilterTableUserPage
                 setFiltrData={setFiltrData}
             />
 
@@ -143,7 +156,7 @@ const MonthHistoryUser = () => {
 
             <Table
                 columns={columns}
-                style={{ marginTop: "30px" }}
+                style={{marginTop: "30px"}}
                 dataSource={filteredProducts}
                 rowKey="id"
                 pagination={{

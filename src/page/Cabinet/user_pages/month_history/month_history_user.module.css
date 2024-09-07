@@ -1,8 +1,9 @@
-.products_table{
+.products_table {
     margin-bottom: 100px;
 
 }
-.download_excel_btn{
+
+.download_excel_btn {
     width: 100%;
     height: 60px;
     margin-top: 40px;
@@ -11,7 +12,8 @@
     align-items: center;
 
 }
-.download_excel_btn button{
+
+.download_excel_btn button {
     border: none;
     outline: none;
     cursor: pointer;

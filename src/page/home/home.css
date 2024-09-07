@@ -405,13 +405,14 @@ section h1 span {
     margin: 0;
     font-weight: 500;
 }
+
 .contact-box-left p {
     color: #939393;
     width: 80%;
 }
 
 
-.contact-box-right{
+.contact-box-right {
     background: #031426;
     border-radius: 20px;
     padding: 20px;
@@ -420,13 +421,15 @@ section h1 span {
     align-items: center;
     flex-direction: column;
 
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;}
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
 
-.contact-box-right input{
+.contact-box-right input {
     margin: 15px 0;
     height: 40px;
 }
-.contact-box-right button{
+
+.contact-box-right button {
     width: 40%;
     height: 40px;
     border-radius: 15px;
@@ -510,32 +513,51 @@ section h1 span {
     .about-list ul:nth-child(1) li:nth-child(4) {
         border-bottom: 1px #bebebe solid;
     }
-    .contact-box{
+
+    .contact-box {
         flex-direction: column;
     }
-    .contact-box-left, .contact-box-right{width: 90%}
-    .contact-box-left p{width: 100%;
-        font-size: 20px;}
-    .contact-box-left h1{
-        font-size: 30px;}
-   .aboutCompany-title h1{
-       font-size: 30px;}
-   .car-title h1{
-       font-size: 25px;
-       text-align: center;
-   }
-   .calc-box h1{
-       font-size: 35px;
-   }
-   .about h1{
-       font-size: 25px;
-       text-align: center;
-   }
-    .about ul li{
-        font-size: 20px;}
-    .aboutCompany-chart-item h1{
+
+    .contact-box-left, .contact-box-right {
+        width: 90%
+    }
+
+    .contact-box-left p {
+        width: 100%;
+        font-size: 20px;
+    }
+
+    .contact-box-left h1 {
+        font-size: 30px;
+    }
+
+    .aboutCompany-title h1 {
+        font-size: 30px;
+    }
+
+    .car-title h1 {
+        font-size: 25px;
+        text-align: center;
+    }
+
+    .calc-box h1 {
+        font-size: 35px;
+    }
+
+    .about h1 {
+        font-size: 25px;
+        text-align: center;
+    }
+
+    .about ul li {
+        font-size: 20px;
+    }
+
+    .aboutCompany-chart-item h1 {
         font-size: 50px;
-    }.aboutCompany-chart-item p{
+    }
+
+    .aboutCompany-chart-item p {
         font-size: 18px;
     }
 }

@@ -50,7 +50,7 @@ i18n
                         getCalc: "GET QUOTE"
                     },
                     aboutCompany: {
-                        titleP: "At Thompson Company, we pay special attention to each of your projects, ensuring attention to detail and an individual approach. With us, you get the most optimal delivery conditions and solutions that meet your needs.",
+                        titleP: "At UzLeader logistics, we pay special attention to each of your projects, ensuring attention to detail and an individual approach. With us, you get the most optimal delivery conditions and solutions that meet your needs.",
                         card1: {
                             title: "Logistics and Delivery Experts",
                             description: "Our team consists of professionals who specialize in handling cargo of various types and sizes. With our experience and knowledge, we offer the best solutions in international logistics and cargo delivery."
@@ -61,7 +61,7 @@ i18n
                         },
                         card3: {
                             title: "Reliability and Efficiency",
-                            description: "Thompson Company is your reliable partner in logistics. We strive to offer the best conditions for each client, guaranteeing timely and safe delivery of your cargo."
+                            description: "UzLeader logistics is your reliable partner in logistics. We strive to offer the best conditions for each client, guaranteeing timely and safe delivery of your cargo."
                         },
 
                         chart: {
@@ -69,21 +69,34 @@ i18n
                             i2: "completed orders",
                             i3: "chose to work with us on a permanent basis",
                             i4: "successful years in the market",
-                            year:"year"
+                            year: "year"
                         }
 
 
                     },
-                    contact:{
-                        subtitle:"UzLeader Cargo will detail every step of the partnership and help you make a decision.",
-                        username:"Your name",
-                        send:"Send"
+                    contact: {
+                        subtitle: "UzLeader Cargo will detail every step of the partnership and help you make a decision.",
+                        username: "Your name",
+                        send: "Send"
                     },
                     footer: {
                         title: "For questions, call us or write via Telegram. We are working every day from 10:00 AM to 6:00 PM.",
                         mail: "send a message by email",
                         call: "call now"
+                    },
+                    errors: {
+                        name_empty: "Enter your name",
+                        name_error: "The name must be at least 3 letters long",
+                        tell_error: "Invalid phone number",
+                        product_name_empty: "Enter the name of the product",
+                        weight_error: "Weight must be greater than 0",
+                        cube_error: "Cube must be greater than 0",
+                        where_empty: "Enter the origin location",
+                        where2_empty: "Enter the destination location",
+                        server_error: "An error occurred on the server",
+                        success: "Sent successfully"
                     }
+
 
                 }
             },
@@ -126,7 +139,7 @@ i18n
                         getCalc: "HISOB KITOBNI OLISH"
                     },
                     aboutCompany: {
-                        titleP: "Thompson Company'da biz har bir loyihangizga alohida e'tibor beramiz, tafsilotlarga e'tibor va individual yondashuvni ta'minlaymiz. Biz bilan siz eng maqbul yetkazib berish sharoitlari va ehtiyojlaringizga mos keladigan yechimlarni olasiz.",
+                        titleP: "UzLeader logistics'da biz har bir loyihangizga alohida e'tibor beramiz, tafsilotlarga e'tibor va individual yondashuvni ta'minlaymiz. Biz bilan siz eng maqbul yetkazib berish sharoitlari va ehtiyojlaringizga mos keladigan yechimlarni olasiz.",
                         card1: {
                             title: "Logistika va Yetkazib Berish Mutaxassislari",
                             description: "Bizning jamoamiz turli xil va o‘lchamdagi yuklar bilan ishlashda ixtisoslashgan mutaxassislardan iborat. Tajribamiz va bilimlarimiz tufayli biz xalqaro logistika va yuk tashish sohasida eng yaxshi yechimlarni taklif etamiz."
@@ -137,7 +150,7 @@ i18n
                         },
                         card3: {
                             title: "Ishonchlilik va Samaradorlik",
-                            description: "Thompson Company – bu logistikadagi ishonchli hamkoringiz. Biz har bir mijoz uchun eng yaxshi sharoitlarni taklif qilishga intilamiz, yukingizning o‘z vaqtida va xavfsiz yetkazib berilishini kafolatlaymiz."
+                            description: "UzLeader logistics – bu logistikadagi ishonchli hamkoringiz. Biz har bir mijoz uchun eng yaxshi sharoitlarni taklif qilishga intilamiz, yukingizning o‘z vaqtida va xavfsiz yetkazib berilishini kafolatlaymiz."
                         },
 
                         chart: {
@@ -145,22 +158,33 @@ i18n
                             i2: "bajarilgan buyurtmalar",
                             i3: "biz bilan doimiy hamkorlikni tanlaganlar",
                             i4: "bozorda muvaffaqiyatli faoliyat",
-                            year:"yil"
+                            year: "yil"
                         }
 
 
                     },
-                    contact:{
-                        subtitle:"UzLeader Cargo – sizga hamkorlikning har bir bosqichini batafsil tushuntirib beradi va qaror qabul qilishingizda yordam beradi.",
-                        username:"Ismingiz",
-                        send:"Yuborish"
+                    contact: {
+                        subtitle: "UzLeader Cargo – sizga hamkorlikning har bir bosqichini batafsil tushuntirib beradi va qaror qabul qilishingizda yordam beradi.",
+                        username: "Ismingiz",
+                        send: "Yuborish"
                     },
                     footer: {
                         title: "Savollar bo'lsa, telefon orqali qo'ng'iroq qiling yoki Telegram orqali yozing. Biz har kuni soat 10:00 dan 18:00 gacha ishlaymiz.",
                         mail: "Mail yuborish",
                         call: "Hozir qo'ng'iroq qiling"
+                    },
+                    errors: {
+                        name_empty: "Ismingizni kiriting",
+                        name_error: "Ism kamida 3 harfdan iborat bo'lishi kerak",
+                        tell_error: "Noto'g'ri telefon raqami",
+                        product_name_empty: "Mahsulot nomini kiriting",
+                        weight_error: "Og'irlik 0 dan katta bo'lishi kerak",
+                        cube_error: "Hajm 0 dan katta bo'lishi kerak",
+                        where_empty: "Jo'natish joyini kiriting",
+                        where2_empty: "Manzilni kiriting",
+                        server_error: "Serverda xatolik yuz berdi",
+                        success: "Muvaffaqiyatli yuborildi"
                     }
-
 
                 }
             },
@@ -203,7 +227,7 @@ i18n
                         getCalc: "ПОЛУЧИТЬ РАСЧЕТ"
                     },
                     aboutCompany: {
-                        titleP: "В Thompson Company мы придаем особое значение каждому вашему проекту, обеспечивая внимание к деталям и индивидуальный подход. С нами вы получаете наиболее оптимальные условия доставки и решения, которые соответствуют вашим потребностям.",
+                        titleP: "В UzLeader logistics мы придаем особое значение каждому вашему проекту, обеспечивая внимание к деталям и индивидуальный подход. С нами вы получаете наиболее оптимальные условия доставки и решения, которые соответствуют вашим потребностям.",
                         card1: {
                             title: "Эксперты по Логистике и Доставке",
                             description: "Наша команда состоит из профессионалов, которые специализируются на работе с грузами различных видов и размеров. Благодаря нашему опыту и знаниям, мы предлагаем лучшие решения в области международной логистики и доставки грузов."
@@ -214,25 +238,37 @@ i18n
                         },
                         card3: {
                             title: "Надежность и Эффективность",
-                            description: "Thompson Company – это ваш надежный партнер в логистике. Мы стремимся предложить наилучшие условия для каждого клиента, гарантируя своевременную и безопасную доставку вашего груза."
+                            description: "UzLeader logistics – это ваш надежный партнер в логистике. Мы стремимся предложить наилучшие условия для каждого клиента, гарантируя своевременную и безопасную доставку вашего груза."
                         },
-                        chart:{
-                            i1:"довольный клиенты",
-                            i2:"выполненные заказы",
-                            i3:"выбрали работу с нами на постоянной основе",
-                            i4:"успешной работы на рынке",
-                            year:"лет"
+                        chart: {
+                            i1: "довольный клиенты",
+                            i2: "выполненные заказы",
+                            i3: "выбрали работу с нами на постоянной основе",
+                            i4: "успешной работы на рынке",
+                            year: "лет"
                         }
                     },
-                    contact:{
-                        subtitle:"UzLeader Cargo – детально расскажут каждом шаге партнёрства во всех деталях и помогут вам принять решение.",
-                        username:"Ваше имя",
-                        send:"отправить"
+                    contact: {
+                        subtitle: "UzLeader Cargo – детально расскажут каждом шаге партнёрства во всех деталях и помогут вам принять решение.",
+                        username: "Ваше имя",
+                        send: "отправить"
                     },
-                    footer:{
-                        title:"При вопросах – звоните по телефонам или напишите по телеграм Мы на связи каждый день с 10:00 до 18:00",
-                        mail:"отправить сообщение по почте",
-                        call:"позвонить сейчас"
+                    footer: {
+                        title: "При вопросах – звоните по телефонам или напишите по телеграм Мы на связи каждый день с 10:00 до 18:00",
+                        mail: "отправить сообщение по почте",
+                        call: "позвонить сейчас"
+                    },
+                    errors: {
+                        name_empty: "Введите ваше имя",
+                        name_error: "Имя должно содержать не менее 3 букв",
+                        tell_error: "Неверный номер телефона",
+                        product_name_empty: "Введите название продукта",
+                        weight_error: "Вес должен быть больше 0",
+                        cube_error: "Объем должен быть больше 0",
+                        where_empty: "Введите место отправления",
+                        where2_empty: "Введите место назначения",
+                        server_error: "Произошла ошибка на сервере",
+                        success: "Отправлено успешно"
                     }
 
                 }

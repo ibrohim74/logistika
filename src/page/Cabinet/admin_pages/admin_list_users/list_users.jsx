@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Input, Modal, notification, Space, Table } from "antd";
+import React, {useEffect, useState} from 'react';
+import {Button, Input, Modal, notification, Space, Table} from "antd";
 import FilterTableUser from "../../../../component/filterTable/filterTableUser.jsx";
 import './list_user.css';
-import { Link } from "react-router-dom";
-import { CABINET, USER_LIST_USER_PAGE_ADMIN } from "../../../../utils/const.jsx";
-import { CreateUsersAPI, DeleteUsersAPI, GetUsersAPI, UpdateUsersAPI } from "./API/AdminUserLIstAPI.jsx";
+import {Link} from "react-router-dom";
+import {CABINET, USER_LIST_USER_PAGE_ADMIN} from "../../../../utils/const.jsx";
+import {CreateUsersAPI, DeleteUsersAPI, GetUsersAPI, UpdateUsersAPI} from "./API/AdminUserLIstAPI.jsx";
 import $API from "../../../../utils/http.js";
 
 const ListUsers = () => {
     const [userList, setUserList] = useState([]);
-    const [currentUser, setCurrentUser] = useState({ id: null, username: "", role: "" });
+    const [currentUser, setCurrentUser] = useState({id: null, username: "", role: ""});
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [userUpdateModal, setUserUpdateModal] = useState(false);
     const [createUserModal, setCreateUserModal] = useState(false);
@@ -30,7 +30,7 @@ const ListUsers = () => {
     const handleMonthChange = (uuid, month) => {
         const updatedMonth = month || currentMonth;
         const updatedUserList = userList.map(user =>
-            user.uuid === uuid ? { ...user, selectedMonth: updatedMonth } : user
+            user.uuid === uuid ? {...user, selectedMonth: updatedMonth} : user
         );
         setUserList(updatedUserList);
         setFilteredUsers(updatedUserList);
@@ -39,7 +39,7 @@ const ListUsers = () => {
     const currentMonth = new Date().getMonth().toString();
 
     const columns = [
-        { title: 'Username', dataIndex: 'username', key: 'username' },
+        {title: 'Username', dataIndex: 'username', key: 'username'},
         {
             title: 'Update',
             key: 'update',
@@ -60,7 +60,7 @@ const ListUsers = () => {
                         value={record.selectedMonth || currentMonth}
                         onChange={(e) => handleMonthChange(record.uuid, e.target.value)}
                         className='modal_userList_select'
-                        style={{ width:150 }}
+                        style={{width: 150}}
                     >
                         <option value="0">Yanvar</option>
                         <option value="1">Fevral</option>
@@ -76,7 +76,8 @@ const ListUsers = () => {
                         <option value="11">Dekabr</option>
                     </select>
 
-                    <Button type="primary" onClick={() => downloadMonth(record.uuid, record.selectedMonth , record.username)}>
+                    <Button type="primary"
+                            onClick={() => downloadMonth(record.uuid, record.selectedMonth, record.username)}>
                         Month
                     </Button>
                 </Space>
@@ -131,13 +132,13 @@ const ListUsers = () => {
             const response = await UpdateUsersAPI(currentUser);
 
             const updatedUserList = userList.map(user =>
-                user.uuid === currentUser.uuid ? { ...user, ...response.data } : user
+                user.uuid === currentUser.uuid ? {...user, ...response.data} : user
             );
 
             setUserList(updatedUserList);
 
             const updatedFilteredUsers = filteredUsers.map(user =>
-                user.uuid === currentUser.uuid ? { ...user, ...response.data } : user
+                user.uuid === currentUser.uuid ? {...user, ...response.data} : user
             );
 
             setFilteredUsers(updatedFilteredUsers);
@@ -168,7 +169,7 @@ const ListUsers = () => {
             setUserList(updatedUserList);
             setFilteredUsers(updatedUserList);
             setCreateUserModal(false);
-            setNewUser({ username: "", password: "", role: "user" });
+            setNewUser({username: "", password: "", role: "user"});
             api.success({
                 message: "Новый пользователь успешно создан",
 
@@ -181,7 +182,7 @@ const ListUsers = () => {
         }
     };
 
-    const downloadMonth = async (uuid, month , username) => {
+    const downloadMonth = async (uuid, month, username) => {
         const validMonth = (month !== undefined && month !== null) ? month : currentMonth;
 
         if (!uuid) {
@@ -199,7 +200,7 @@ const ListUsers = () => {
                 responseType: 'blob',
             });
 
-            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
             link.download = `Monthly_Report_${parseInt(validMonth, 10) + 1}_${username}.xlsx`;
@@ -230,10 +231,25 @@ const ListUsers = () => {
                 current: page,
             }));
         } catch (error) {
-            api.error({
-                message: "Ошибка",
-                description: "Не удалось получить пользователей."
-            });
+
+            if (error?.response?.status === 404) {
+                // Retry with page 1
+                const Retry = await GetUsersAPI(1, filtrUsers);
+                const userData = Retry.data.results;
+                setUserList(userData);
+                setFilteredUsers(userData);
+                setPagination(prev => ({
+                    ...prev,
+                    total: Retry.data.count,
+                    current: page,
+                }));
+            } else {
+                api.error({
+                    message: "Ошибка",
+                    description: "Не удалось получить пользователей."
+                });
+            }
+
         } finally {
             setLoading(false);
         }
@@ -258,17 +274,17 @@ const ListUsers = () => {
                 <Input
                     placeholder='Username'
                     value={currentUser.username}
-                    onChange={e => setCurrentUser({ ...currentUser, username: e.target.value })}
+                    onChange={e => setCurrentUser({...currentUser, username: e.target.value})}
                 />
                 <Input
                     placeholder='Password'
                     type='password'
                     value={currentUser.password || ""}
-                    onChange={e => setCurrentUser({ ...currentUser, password: e.target.value })}
+                    onChange={e => setCurrentUser({...currentUser, password: e.target.value})}
                 />
                 <select
                     value={currentUser.role}
-                    onChange={e => setCurrentUser({ ...currentUser, role: e.target.value })}
+                    onChange={e => setCurrentUser({...currentUser, role: e.target.value})}
                     className='modal_userList_select'
                 >
                     <option value="user">User</option>
@@ -289,17 +305,17 @@ const ListUsers = () => {
                 <Input
                     placeholder='Username'
                     value={newUser.username}
-                    onChange={e => setNewUser({ ...newUser, username: e.target.value })}
+                    onChange={e => setNewUser({...newUser, username: e.target.value})}
                 />
                 <Input
                     placeholder='Password'
                     type='password'
                     value={newUser.password}
-                    onChange={e => setNewUser({ ...newUser, password: e.target.value })}
+                    onChange={e => setNewUser({...newUser, password: e.target.value})}
                 />
                 <select
                     value={newUser.role}
-                    onChange={e => setNewUser({ ...newUser, role: e.target.value })}
+                    onChange={e => setNewUser({...newUser, role: e.target.value})}
                     className='modal_userList_select'
                 >
                     <option value="user">User</option>
@@ -321,13 +337,13 @@ const ListUsers = () => {
                 </Button>
             </Modal>
 
-            <FilterTableUser setFiltrUsers={setFiltrUsers} />
+            <FilterTableUser setFiltrUsers={setFiltrUsers}/>
             <Button className='Create_User_Btn' type="primary" onClick={() => setCreateUserModal(true)}>
                 Create
             </Button>
             <Table
                 columns={columns}
-                style={{ marginBottom: "100px" }}
+                style={{marginBottom: "100px"}}
                 dataSource={filteredUsers}
                 pagination={{
                     current: pagination.current,

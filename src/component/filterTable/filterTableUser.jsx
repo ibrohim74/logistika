@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import style from "./filterTable.module.css";
-import $API from "../../utils/http.js";
 
 const FilterTableUser = ({ setFiltrUsers }) => {
     const [username, setUsername] = useState('');

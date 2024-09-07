@@ -24,27 +24,27 @@ export const CURRENT_YEAR_USER = 'current_year'
 export const USER_LIST_ADMIN = 'user_list'
 export const USER_LIST_USER_PAGE_ADMIN = 'user_list/:id'
 
-export const RouterData =[
+export const RouterData = [
     {
-        path:HOME,
-        Component:<Home/>
+        path: HOME,
+        Component: <Home/>
     },
     {
-        path:LOGIN,
-        Component:<Login/>
+        path: LOGIN,
+        Component: <Login/>
     },
 ]
 
 export const Layout = [
-    {path:CABINET , Component:<Layout_Cabinet/>}
+    {path: CABINET, Component: <Layout_Cabinet/>}
 ]
 
 export const User_Route = [
-    {path:CURRENT_MONTH_USER , Component:<Month_history_user/>},
-    {path:CURRENT_YEAR_USER , Component:<Year_history_user/>},
+    {path: CURRENT_MONTH_USER, Component: <Month_history_user/>},
+    {path: CURRENT_YEAR_USER, Component: <Year_history_user/>},
 ]
 export const Admin_Route = [
-    {path:USER_LIST_ADMIN , Component:<ListUsers/>},
-    {path:USER_LIST_USER_PAGE_ADMIN , Component:<User_page/>},
+    {path: USER_LIST_ADMIN, Component: <ListUsers/>},
+    {path: USER_LIST_USER_PAGE_ADMIN, Component: <User_page/>},
 
 ]

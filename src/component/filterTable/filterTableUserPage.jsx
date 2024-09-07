@@ -1,12 +1,10 @@
 import {useState} from 'react';
 import style from "./filterTable.module.css";
-import $API from "../../utils/http.js";
 
 const FilterTableUserPage = ({ setFiltrData }) => {
-    const [filterValues, setFilterValues] = useState({title:"" , status:""});
+    const [filterValues, setFilterValues] = useState({title:"" , status:"" ,places:""});
 
     const handleFilter =  () => {
-        console.log('asdasd')
         setFiltrData(filterValues)
     };
 
@@ -14,22 +12,24 @@ const FilterTableUserPage = ({ setFiltrData }) => {
     const handleTitleProductChange = (e) => {
         setFilterValues({...filterValues, title: e.target.value});
     };
+    const handlePlacesProductChange = (e) => {
+        setFilterValues({...filterValues, places: e.target.value});
+    };
 
     const handleStatusChange = (e) => {
         setFilterValues({...filterValues, status: e.target.value});
     };
 
     const handleClearFilter = () => {
-        console.log(
-            'sadasdasd'
-        )
         setFilterValues({
             status: "",
             title: "",
+            places: "",
         });
         setFiltrData({
             status: "",
             title: "",
+            places: "",
         });
 
     };
@@ -50,6 +50,10 @@ const FilterTableUserPage = ({ setFiltrData }) => {
                 <div className={style.filterBox_item}>
                     <input type="text" placeholder="Наименование" value={filterValues.title}
                            onChange={handleTitleProductChange}/>
+                </div>
+                <div className={style.filterBox_item}>
+                    <input type="text" placeholder="Мест" value={filterValues.places}
+                           onChange={handlePlacesProductChange}/>
                 </div>
                 <div className={style.filterBox_item}>
                     <select value={filterValues.status} onChange={handleStatusChange}>

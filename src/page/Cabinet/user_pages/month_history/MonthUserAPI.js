@@ -1,17 +1,20 @@
 import $API from "../../../../utils/http.js";
 
-export const Month_historyAPI = async (uuid, page = 1 , filtrData) => {
+export const Month_historyAPI = async (uuid, page = 1, filtrData) => {
 
     try {
         let params = {page: page};
         if (filtrData?.title) {
             params.title = filtrData.title;
-        } else if (filtrData?.status) {
+        }
+        if (filtrData?.status) {
             params.status = filtrData.status;
         }
-        console.log(params)
-        const res = await $API.get(`/product/user_month/${uuid}/`,  { params } );
-        console.log(res)
+        if (filtrData?.places) {
+            params.places = filtrData.places;
+        }
+        const res = await $API.get(`/product/user_month/${uuid}/`, {params});
+
         return res;
     } catch (err) {
         console.error('Error fetching month history:', err);
@@ -19,10 +22,3 @@ export const Month_historyAPI = async (uuid, page = 1 , filtrData) => {
     }
 };
 
-export const GetExcelAPI = async () => {
-    try {
-        const res = await $API.get(`/product/download-excel/`);
-        console.log(res)
-    }catch (e){
-        console.log(e)}
-}

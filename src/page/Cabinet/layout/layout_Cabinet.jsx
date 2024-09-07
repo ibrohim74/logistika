@@ -4,7 +4,6 @@ import {Admin_Route, User_Route} from '../../../utils/const.jsx';
 import './layout_cabinet.css'
 import LayoutNav from "./layout_navbar/LayoutNav.jsx";
 import $API from "../../../utils/http.js";
-import {jwtDecode} from "jwt-decode";
 
 const Layout_Cabinet = () => {
     const [user, setUser] = useState({
@@ -15,7 +14,7 @@ const Layout_Cabinet = () => {
         const getUserData = async () => {
             try {
                 const res = await $API.get('/auth/user-info/');
-                setUser({username: res.data.username, role: res.data.role , uuid: res.data.uuid});
+                setUser({username: res.data.username, role: res.data.role, uuid: res.data.uuid});
             } catch (e) {
                 console.log('Error fetching user data:', e);
             }
@@ -24,7 +23,7 @@ const Layout_Cabinet = () => {
     }, []);
 
     return (
-        <div className={'layout_box'} >
+        <div className={'layout_box'}>
             <LayoutNav user={user}/>
             <div className="content_layout">
                 <div className="container">
@@ -35,7 +34,7 @@ const Layout_Cabinet = () => {
                             ))}
                         {user.role === "admin" &&
                             Admin_Route.map(({path, Component}) => (
-                                <Route key={path} path={path} element={Component }/>
+                                <Route key={path} path={path} element={Component}/>
                             ))}
                     </Routes>
                 </div>

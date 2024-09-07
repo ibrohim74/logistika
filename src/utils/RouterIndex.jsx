@@ -6,18 +6,18 @@ const RouterIndex = () => {
     return (
 
 
-            <BrowserRouter>
-                <Routes>
+        <BrowserRouter>
+            <Routes>
 
-                    {RouterData?.map(({path, Component}) => (
-                        <Route key={path} path={path} element={Component}/>
-                    ))}
-                    {Layout?.map(({path, Component}) => (
-                        <Route key={path} path={`${path}/*`} element={Component}/>
-                    ))}
+                {RouterData?.map(({path, Component}) => (
+                    <Route key={path} path={path} element={Component}/>
+                ))}
+                {Layout?.map(({path, Component}) => (
+                    <Route key={path} path={`${path}/*`} element={Component}/>
+                ))}
 
-                </Routes>
-            </BrowserRouter>
+            </Routes>
+        </BrowserRouter>
 
 
     );

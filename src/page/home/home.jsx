@@ -1,33 +1,103 @@
-import React, {Suspense, useState} from 'react';
+import React, {useState} from 'react';
 import "./home.css"
 import {Swiper, SwiperSlide} from 'swiper/react';
-// Import Swiper styles
+
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 
-// import required modules
 import {EffectFade, Navigation, Pagination, Autoplay} from 'swiper/modules';
 import Navbar from "../../component/navbar/navbar.jsx";
 import {ArrowRightOutlined, EnterOutlined} from "@ant-design/icons";
 import PriceCalc from "./priceCalc.jsx";
-import {Canvas} from "@react-three/fiber";
-import {Environment, OrbitControls} from "@react-three/drei";
 
-import mapPhoto from '../../assets/pngegg.png'
-import {Input} from "antd";
+import {Input, message} from "antd";
 import Footer from "../../component/footer/footer.jsx";
 import {useTranslation} from "react-i18next";
+import axios from "axios";
 
 const Home = () => {
     const [initialState, setInitialState] = useState({})
     const {t} = useTranslation();
     const langStorage = window.localStorage.getItem('i18nextLng')
+    const [messageApi, contextHolder] = message.useMessage();
+    const [disabled, setDisabled] = useState(false);
+
+
+    const checkForm = () => {
+        setDisabled(true);
+
+        const hasNumber = /\d/;
+
+        if (!initialState.username || initialState.username.trim().length === 0) {
+            messageApi.open({
+                type: 'error',
+                content: t('errors.name_empty'),
+            });
+            setDisabled(false)
+            return;
+        }
+
+        if (initialState.username.trim().length <= 3 || hasNumber.test(initialState.username)) {
+            messageApi.open({
+                type: 'error',
+                content: t('errors.name_error'),
+            });
+            setDisabled(false)
+            return;
+        }
+
+        if (!initialState.tell || initialState.tell.trim().length < 17) {
+            messageApi.open({
+                type: 'error',
+                content: t('errors.tell_error'),
+            });
+            setDisabled(false)
+            return;
+        }
+
+        let msg = `<b>Новое сообщение  </b> \n`;
+        msg += `\n имя: ${initialState.username}\n`;
+        msg += `\n телефон: ${initialState.tell}\n`;
+
+
+        const TOKEN = "6849867187:AAESn81Py9OGFkncjSNu-eHeoHyc4hA3sm8";
+        const CHAT_ID = "-4590200059";
+
+        try {
+            axios.post(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+                chat_id: CHAT_ID,
+                parse_mode: 'html',
+                text: msg
+            }).then((res) => {
+                if (res?.status === 200) {
+                    messageApi.open({
+                        type: 'success',
+                        content: t('errors.success'),
+                    });
+                    setTimeout(() => {
+                        setInitialState({username: "", tell: ""})
+                        setDisabled(false)
+                    }, 5000);
+                }
+
+            })
+        } catch (e) {
+            messageApi.open({
+                type: 'error',
+                content: t('errors.server_error'),
+            });
+            setDisabled(false)
+        }
+
+    };
+
     return (
         <>
             <Navbar/>
+            {contextHolder}
             <div className={"swiper_opacity"}>
                 <div className="swiper_opacity_block"></div>
                 <Swiper
@@ -56,10 +126,10 @@ const Home = () => {
 
                 <div className="container">
                     <div className="header_content">
-                        <h1>Thompson Cargo</h1>
+                        <h1>UzLeader logistics</h1>
                         <p>{t('home_header.p')}</p>
 
-                        <a href="#" className={"btn"}>
+                        <a href="#contacts" className={"btn"}>
                             <p>{t('home_header.contact')}</p>
                             <span className="arrowBtn"><ArrowRightOutlined/></span></a>
                     </div>
@@ -67,7 +137,7 @@ const Home = () => {
 
             </div>
 
-            <section className={" about"}>
+            <section className={" about"} id={'services'}>
                 <div className="container">
                     {langStorage === 'ru' || langStorage === "ru-RU" ? (
                         <h1>ВЫ ПОЛУЧИТЕ <span>ЛУЧШИЙ</span> СЕРВИС И КАЧЕСТВО, ЧТО ЕСТЬ НА РАСТУЩЕМ РЫНКЕ ПО ЦЕНАМ,
@@ -112,7 +182,7 @@ const Home = () => {
 
             <PriceCalc/>
 
-            <section className={' car'}>
+            <section className={'car'} id="about">
                 <div className="car-opacity"></div>
                 <div className="container">
                     <div className="car-title">
@@ -135,8 +205,10 @@ const Home = () => {
                         ) : ('')}
                         {langStorage === 'en' || langStorage === "en-EN" ? (
                             <h1>
-                                You <span>see</span> the complete <span>delivery</span> accompaniment – from point A to point B. How the cargo is
-                                carefully <span>placed</span> on the trucks and departs from the <span>warehouse</span> in strict accordance with
+                                You <span>see</span> the complete <span>delivery</span> accompaniment – from point A to
+                                point B. How the cargo is
+                                carefully <span>placed</span> on the trucks and departs from
+                                the <span>warehouse</span> in strict accordance with
                                 <span>ISO-9000</span> standards.
                             </h1>
                         ) : ('')}
@@ -158,7 +230,7 @@ const Home = () => {
                         ) : ('')}
                         {langStorage === 'en' || langStorage === "en-EN" ? (
                             <h1>
-                                Your <span>Project</span>  – Our <span>Priority</span>
+                                Your <span>Project</span> – Our <span>Priority</span>
                             </h1>
                         ) : ('')}
 
@@ -204,7 +276,7 @@ const Home = () => {
                             <p>{t("aboutCompany.chart.i3")}</p>
 
                         </div>
-                        <div className="aboutCompany-chart-item">
+                        <div className="aboutCompany-chart-item" id={'contacts'}>
                             <h1>10 {t("aboutCompany.chart.year")}</h1>
                             <p>{t("aboutCompany.chart.i4")}</p>
                         </div>
@@ -212,7 +284,7 @@ const Home = () => {
                 </div>
             </section>
 
-            <section className="contact">
+            <section className="contact" id={'contacts'}>
                 <div className="container">
                     <div className="contact-box">
                         <div className="contact-box-left">
@@ -221,11 +293,13 @@ const Home = () => {
                                     результат <span>24/7</span> – для этого мы с вами в <span>команде!</span></h1>
                             ) : ('')}
                             {langStorage === 'uz' || langStorage === "uz-UZ" ? (
-                                <h1><span>Intiling</span>, biznesingiz <span>24/7</span> yuqori natija <span>berishi</span> uchun
+                                <h1><span>Intiling</span>, biznesingiz <span>24/7</span> yuqori
+                                    natija <span>berishi</span> uchun
                                     – buning uchun biz siz bilan <span>bir jamoada!</span></h1>
                             ) : ('')}
                             {langStorage === 'en' || langStorage === "en-EN" ? (
-                                <h1><span>Strive</span> for your business to <span>deliver</span> high results <span>24/7</span>
+                                <h1><span>Strive</span> for your business to <span>deliver</span> high
+                                    results <span>24/7</span>
                                     – that's why we are in <span>team</span> with you!</h1>
                             ) : ('')}
 
@@ -234,12 +308,13 @@ const Home = () => {
                         </div>
                         <div className="contact-box-right">
                             <div className="contact-form">
-                                <Input placeholder={t('contact.username')}/>
+                                <Input placeholder={t('contact.username')} value={initialState?.username}
+                                       onChange={e => setInitialState({...initialState, username: e.target.value})}/>
                                 <Input placeholder={"+998"}
-                                       value={initialState?.tellNumber}
+                                       value={initialState?.tell}
                                        type={'tell'}
                                        onChange={e => {
-                                           const formattedValue = e.target.value.replace(/\D/g, ''); // faqat raqamlarni qabul qilish
+                                           const formattedValue = e.target.value.replace(/\D/g, '');
                                            let formattedNumber = '+998';
                                            if (formattedValue.length > 3) {
                                                formattedNumber += ' ' + formattedValue.substring(3, 5);
@@ -253,10 +328,10 @@ const Home = () => {
                                            if (formattedValue.length > 10) {
                                                formattedNumber += ' ' + formattedValue.substring(10, 12);
                                            }
-                                           setInitialState({...initialState, tellNumber: formattedNumber});
+                                           setInitialState({...initialState, tell: formattedNumber});
                                        }}
                                 />
-                                <button>{t('contact.send')}</button>
+                                <button onClick={checkForm} disabled={disabled}>{t('contact.send')}</button>
                             </div>
                         </div>
                     </div>
