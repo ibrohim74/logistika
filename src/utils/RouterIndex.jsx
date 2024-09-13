@@ -4,8 +4,6 @@ import {Layout, RouterData} from "./const.jsx";
 
 const RouterIndex = () => {
     return (
-
-
         <BrowserRouter>
             <Routes>
 

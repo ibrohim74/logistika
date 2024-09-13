@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 const $API = axios.create({
-    baseURL: 'http://213.199.39.164:8015/', headers: {
+    baseURL: 'https://new.top3.uz/', headers: {
         'Content-Type': 'application/json',
     },
 });
