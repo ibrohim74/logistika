@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {Admin_Route, User_Route} from '../../../utils/const.jsx';
-import './layout_cabinet.css'
+import './layout_cabinet.css';
 import LayoutNav from "./layout_navbar/LayoutNav.jsx";
 import $API from "../../../utils/http.js";
 
@@ -10,6 +10,7 @@ const Layout_Cabinet = () => {
         username: "",
         role: ""
     });
+
     useEffect(() => {
         const getUserData = async () => {
             try {
@@ -24,17 +25,17 @@ const Layout_Cabinet = () => {
 
     return (
         <div className={'layout_box'}>
-            <LayoutNav user={user}/>
+            <LayoutNav user={user} />
             <div className="content_layout">
                 <div className="container">
                     <Routes>
                         {user.role === "user" &&
                             User_Route.map(({path, Component}) => (
-                                <Route key={path} path={path} element={Component}/>
+                                <Route key={path} path={path} element={<Component />} />
                             ))}
                         {user.role === "admin" &&
                             Admin_Route.map(({path, Component}) => (
-                                <Route key={path} path={path} element={Component}/>
+                                <Route key={path} path={path} element={<Component />} />
                             ))}
                     </Routes>
                 </div>
